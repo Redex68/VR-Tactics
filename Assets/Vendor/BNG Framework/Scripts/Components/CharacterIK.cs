@@ -105,9 +105,7 @@ namespace BNG {
 
             // Hide Legs
             if(HipsJoint) {
-                Debug.Log(HipsJoint.localScale);
                 HipsJoint.localScale = HideLegs ? Vector3.zero : Vector3.one;
-                Debug.Log(HipsJoint.localScale);
             }
 
             Transform hipJoint = animator.GetBoneTransform(HumanBodyBones.RightShoulder);            

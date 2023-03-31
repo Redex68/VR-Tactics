@@ -5,9 +5,10 @@ using UnityEngine;
 public class RTSPlayerControler : MonoBehaviour
 {
 
-    float ZoomUpperBound = 250f;
-    float ZoomLowerBound = 200f;
-    private float zoom = 200f;
+    [SerializeField] float maxDistance = 250f;
+    [SerializeField] float minDistance = 200f;
+    [SerializeField] [Range(0.0f, 1.0f)] float startDistancePercent;
+    private float zoom;
     private float defaultLocalZ;
     // Start is called before the first frame update
     void Start()
@@ -16,6 +17,7 @@ public class RTSPlayerControler : MonoBehaviour
         canvas.worldCamera = gameObject.GetComponentInChildren<Camera>();
 
         defaultLocalZ = transform.localPosition.z;
+        zoom = Mathf.Lerp(minDistance, maxDistance, 1 - startDistancePercent);
     }
 
     // Update is called once per frame
@@ -41,7 +43,7 @@ public class RTSPlayerControler : MonoBehaviour
 
         float scroll = Input.GetAxisRaw("Mouse ScrollWheel") * 12500.0f * Time.deltaTime;
 
-        if(zoom <= ZoomLowerBound && scroll >= 0 || zoom >= ZoomUpperBound && scroll <= 0 || zoom >= ZoomLowerBound && zoom <= ZoomUpperBound) {
+        if(zoom <= minDistance && scroll >= 0 || zoom >= maxDistance && scroll <= 0 || zoom >= minDistance && zoom <= maxDistance) {
             zoom += scroll;
             posNew += scroll * transform.forward;
         }
