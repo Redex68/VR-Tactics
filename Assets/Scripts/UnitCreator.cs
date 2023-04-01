@@ -31,7 +31,6 @@ public class UnitCreator : MonoBehaviour
     }
 
     void Start() {
-        Debug.Log("Here");
         beingPlaced.colliders = new List<Collider>();
     }
 

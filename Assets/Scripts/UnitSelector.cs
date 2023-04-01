@@ -5,19 +5,11 @@ using UnityEngine.UI;
 
 public class UnitSelector : MonoBehaviour
 {
-    [SerializeField]
-    public GameObject unit;
-
-    private Button button;
+    [SerializeField] public GameObject unit;
 
     // Start is called before the first frame update
     void Start()
     {
-        button = GetComponent<Button>();
-        button.onClick.AddListener(onClick);
-    }
-
-    private void onClick() {
-        UnitCreator.placeUnit(unit);
+        GetComponent<UnitButton>().unit = unit;
     }
 }
