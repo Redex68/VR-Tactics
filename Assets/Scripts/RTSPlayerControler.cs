@@ -5,26 +5,25 @@ using UnityEngine;
 public class RTSPlayerControler : MonoBehaviour
 {
 
+    [Tooltip("An arbitrary number that represents the maximum distance the RTS player can zoom out by.")]
     [SerializeField] float maxDistance = 250f;
+    [Tooltip("An arbitrary number that represents the maximum distance the RTS player can zoom in by.")]
     [SerializeField] float minDistance = 200f;
-    [SerializeField] [Range(0.0f, 1.0f)] float startDistancePercent;
     private float zoom;
     private float defaultLocalZ;
     // Start is called before the first frame update
     void Start()
     {
-        Canvas canvas = GameObject.Find("RTS Player Canvas").GetComponent<Canvas>();
-        canvas.worldCamera = gameObject.GetComponentInChildren<Camera>();
+        // Canvas canvas = GameObject.Find("RTS Player Canvas").GetComponent<Canvas>();
+        // canvas.worldCamera = gameObject.GetComponentInChildren<Camera>();
 
         defaultLocalZ = transform.localPosition.z;
-        zoom = Mathf.Lerp(minDistance, maxDistance, 1 - startDistancePercent);
+        zoom = minDistance;
     }
 
     // Update is called once per frame
     void Update()
     {
-        Canvas canvas = GameObject.Find("RTS Player Canvas").GetComponent<Canvas>();
-        canvas.worldCamera = gameObject.GetComponentInChildren<Camera>();
 
         float forwardMovement = Input.GetAxis("Vertical");
         float sideMovement = Input.GetAxis("Horizontal");
