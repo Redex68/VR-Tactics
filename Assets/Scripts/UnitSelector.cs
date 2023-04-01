@@ -11,5 +11,6 @@ public class UnitSelector : MonoBehaviour
     void Start()
     {
         GetComponent<UnitButton>().unit = unit;
+        Destroy(this);
     }
 }
