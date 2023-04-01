@@ -25,22 +25,20 @@ public class RTSPlayerControler : MonoBehaviour
     void Update()
     {
 
-        float forwardMovement = Input.GetAxis("Vertical");
-        float sideMovement = Input.GetAxis("Horizontal");
+        float forwardMovement = Input.GetAxisRaw("Vertical");
+        float sideMovement = Input.GetAxisRaw("Horizontal");
 
         Vector3 posNew = transform.position;
         float coef = 12500.0f / zoom * Time.deltaTime;
         Vector3 moveDir = transform.forward;
         moveDir.y = 0;
-        moveDir = moveDir.normalized;
         Vector3 sidewaysDir = transform.right;
         sidewaysDir.y = 0;
-        sidewaysDir = sidewaysDir.normalized;
+        moveDir = (moveDir * forwardMovement + sidewaysDir * sideMovement).normalized;
 
-        posNew += moveDir * forwardMovement * coef;
-        posNew += sidewaysDir * sideMovement * coef;
+        posNew += moveDir * coef;
 
-        float scroll = Input.GetAxisRaw("Mouse ScrollWheel") * 12500.0f * Time.deltaTime;
+        float scroll = Input.GetAxis("Mouse ScrollWheel") * 12500.0f * Time.deltaTime;
 
         if(zoom <= minDistance && scroll >= 0 || zoom >= maxDistance && scroll <= 0 || zoom >= minDistance && zoom <= maxDistance) {
             zoom += scroll;
