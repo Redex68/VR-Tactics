@@ -8,9 +8,6 @@ public class UnitSelector : MonoBehaviour
     [SerializeField]
     public GameObject unit;
 
-    [SerializeField]
-    public UnitCreator creator;
-
     private Button button;
 
     // Start is called before the first frame update
@@ -21,6 +18,6 @@ public class UnitSelector : MonoBehaviour
     }
 
     private void onClick() {
-        creator.unit = unit;
+        UnitCreator.placeUnit(unit);
     }
 }
