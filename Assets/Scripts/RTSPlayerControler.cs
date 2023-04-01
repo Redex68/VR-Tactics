@@ -9,14 +9,21 @@ public class RTSPlayerControler : MonoBehaviour
     [SerializeField] float maxDistance = 250f;
     [Tooltip("An arbitrary number that represents the maximum distance the RTS player can zoom in by.")]
     [SerializeField] float minDistance = 200f;
+    [SerializeField] Sprite EnemyMarker;
     private float zoom;
     private float defaultLocalZ;
+    private Renderer[] playerRenderers;
+    private Camera RTSCamera;
+    private RectTransform markerTransform;
     // Start is called before the first frame update
     void Start()
     {
         // Canvas canvas = GameObject.Find("RTS Player Canvas").GetComponent<Canvas>();
         // canvas.worldCamera = gameObject.GetComponentInChildren<Camera>();
 
+        playerRenderers = GameObject.Find("PlayerController").GetComponentsInChildren<Renderer>();
+        RTSCamera = GetComponentInChildren<Camera>();
+        markerTransform = GameObject.Find("EnemyMarker").GetComponent<RectTransform>();
         defaultLocalZ = transform.localPosition.z;
         zoom = minDistance;
     }
@@ -24,7 +31,7 @@ public class RTSPlayerControler : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-
+        //Move camera
         float forwardMovement = Input.GetAxisRaw("Vertical");
         float sideMovement = Input.GetAxisRaw("Horizontal");
 
@@ -38,21 +45,27 @@ public class RTSPlayerControler : MonoBehaviour
 
         posNew += moveDir * coef;
 
+        //Zoom in
         float scroll = Input.GetAxis("Mouse ScrollWheel") * 12500.0f * Time.deltaTime;
 
         if(zoom <= minDistance && scroll >= 0 || zoom >= maxDistance && scroll <= 0 || zoom >= minDistance && zoom <= maxDistance) {
             zoom += scroll;
             posNew += scroll * transform.forward;
         }
+        transform.position = posNew;
 
+        //Rotate camera
         if(Input.GetMouseButton(1)) {
             float mouseX = Input.GetAxisRaw("Mouse X");
 
             Vector3 angles = transform.eulerAngles;
             angles.y += mouseX * 2;
             transform.eulerAngles = angles;
-        }        
+        }
 
-        transform.position = posNew;
+        //Move the marker that denotes the player
+        Bounds bounds = Util.getBounds(playerRenderers);
+        Vector2 posOnScreen = Util.getMarkerPos(bounds, RTSCamera);
+        markerTransform.position = posOnScreen + new Vector2(0, 10);
     }
 }
