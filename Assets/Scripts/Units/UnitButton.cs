@@ -13,4 +13,16 @@ public class UnitButton: Button {
         base.OnPointerDown(eventData);
         UnitCreator.placeUnit(unit);
     }
+
+    public override void OnPointerEnter(PointerEventData eventData)
+    {
+        base.OnPointerEnter(eventData);
+        UIManager.setMouseOverButton(true);
+    }
+
+    public override void OnPointerExit(PointerEventData eventData)
+    {
+        base.OnPointerExit(eventData);
+        UIManager.setMouseOverButton(false);
+    }
 }

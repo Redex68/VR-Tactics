@@ -11,6 +11,7 @@ public class ControllableUnit : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        UnitSelector.addUnit(this);
     }
 
     // Update is called once per frame
@@ -18,7 +19,7 @@ public class ControllableUnit : MonoBehaviour
     {
     }
 
-    void isPlaced()
+    public void place()
     {
         agent.enabled = true;
     }
@@ -30,6 +31,6 @@ public class ControllableUnit : MonoBehaviour
 
     void OnDestroy()
     {
-        Debug.Log("Here");
+        UnitSelector.removeUnit(this);
     }
 }

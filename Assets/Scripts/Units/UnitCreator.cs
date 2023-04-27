@@ -14,7 +14,7 @@ public class UnitCreator : MonoBehaviour
 
     private GameObject unit;
     //Whether a unit is currently being placed or not
-    private bool placingUnit = false;
+    public static bool placingUnit {get; private set;} = false;
     //The unit that's currently being placed by the RTS player
     private UnitPlacer beingPlaced;
     private struct UnitPlacer {
@@ -47,12 +47,11 @@ public class UnitCreator : MonoBehaviour
 
     public static void placeUnit(GameObject unit) {
         Instance.unit = unit;
-        Instance.placingUnit = true;
+        placingUnit = true;
 
         Instance.setupUnit();
         Instance.moveUnit();
     }
-
 
 /// <summary>
 /// Rotates the unit in the direction of the mouse.
@@ -76,10 +75,15 @@ public class UnitCreator : MonoBehaviour
         Ray ray = RTSPlayer.ScreenPointToRay(Input.mousePosition);
         RaycastHit hitinfo;
 
-        if(validPos = Physics.Raycast(ray, out hitinfo)) 
+        if(Physics.Raycast(ray, out hitinfo))
+        {
+            validPos = hitinfo.transform.gameObject.layer == LayerMask.NameToLayer("Walkable");
             beingPlaced.unit.transform.position = hitinfo.point;
-        else
+        }
+        else {
+            validPos = false;
             beingPlaced.unit.transform.position = RTSPlayer.ScreenToWorldPoint(new Vector3(Input.mousePosition.x, Input.mousePosition.y, 50.0f));
+        }
     }
 
 /// <summary>
@@ -131,6 +135,9 @@ public class UnitCreator : MonoBehaviour
     private void placeDownUnit() {
         beingPlaced.unit.layer = 1;
         foreach (Collider collider in beingPlaced.colliders) collider.enabled = true;
+
+        ControllableUnit script = unit.GetComponent<ControllableUnit>();
+        if(script != null) script.place();
     }
 
 /// <summary>
