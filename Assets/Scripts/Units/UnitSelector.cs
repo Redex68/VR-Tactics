@@ -2,25 +2,21 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.UI;
 
 public class UnitSelector : MonoBehaviour
 {
     public static UnitSelector Instance;
-    
-    [SerializeField] private Image selectArea;
-    [SerializeField] private Camera RTSPlayerCamera;
 
     private struct Unit {
         public ControllableUnit script;
         public Transform transform;
     }
-
-    public static bool selectingUnits {get; private set;} = false;
-    private static Vector2 startMousePos;
-
+    
+    //A list containing all of the selectable units in the game
     private static List<Unit> units = new List<Unit>();
+    //A list containing all of the currently selected units
     private static List<Unit> selectedUnits = new List<Unit>();
+    //A list containing all of the units that were slected in the previous frame
     private static List<Unit> previouslySelectedUnits = new List<Unit>();
 
     void Awake()
@@ -29,74 +25,7 @@ public class UnitSelector : MonoBehaviour
         else Instance = this;
     }
 
-    void Update()
-    {
-        if(selectingUnits) updateArea();
-        else if(Input.GetMouseButton(0) && UIManager.canSelectArea()) startSelecting();
-    }
-
-    private static void startSelecting()
-    {
-        selectingUnits = true;
-        startMousePos = Input.mousePosition;
-        Instance.selectArea.enabled = true;
-        Instance.selectArea.rectTransform.position = startMousePos;
-
-        updateArea();
-    }
-
-    private static void stopSelecting()
-    {
-        selectingUnits = false;
-        Instance.selectArea.enabled = false;
-    }
-
-    private static void updateArea()
-    {
-        if(!Input.GetMouseButton(0)) stopSelecting();
-        Vector3 pos = Input.mousePosition;
-
-        Vector2 bottomLeft;
-        Vector2 topRight;
-
-        if(startMousePos.x < pos.x) 
-        {
-            bottomLeft.x = startMousePos.x;
-            topRight.x = pos.x;
-        }
-        else
-        {
-            bottomLeft.x = pos.x;
-            topRight.x = startMousePos.x;
-        }
-
-        if(startMousePos.y < pos.y)
-        {
-            bottomLeft.y = startMousePos.y;
-            topRight.y = pos.y;
-        }
-        else
-        {
-            bottomLeft.y = pos.y;
-            topRight.y = startMousePos.y;
-        }
-        
-        RectTransform trans = Instance.selectArea.rectTransform;
-        trans.position = bottomLeft;
-        trans.sizeDelta = (topRight - bottomLeft);
-    }
-
-    private static void getUnitsInSelection()
-    {
-        foreach(Unit u in units)
-        {
-            Instance.RTSPlayerCamera.WorldToScreenPoint(u.transform.position);
-
-        }
-    }
-
-
-
+//Adds the unit to the selector script's list of all units
     public static void addUnit(ControllableUnit unit)
     {
         Unit _unit = new Unit();
@@ -105,6 +34,7 @@ public class UnitSelector : MonoBehaviour
         units.Add(_unit);
     }
 
+//Removes the unit from the selector script's list of all units
     public static void removeUnit(ControllableUnit unit)
     {
         Unit _unit = units.Find(u => u.script.Equals(unit));
