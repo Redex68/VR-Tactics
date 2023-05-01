@@ -136,7 +136,7 @@ public class UnitCreator : MonoBehaviour
         beingPlaced.unit.layer = 1;
         foreach (Collider collider in beingPlaced.colliders) collider.enabled = true;
 
-        ControllableUnit script = unit.GetComponent<ControllableUnit>();
+        ControllableUnit script = beingPlaced.unit.GetComponent<ControllableUnit>();
         if(script != null) script.place();
     }
 

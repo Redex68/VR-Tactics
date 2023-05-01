@@ -1,3 +1,4 @@
+using System.Linq;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -8,14 +9,20 @@ public class AreaUnitSelector : MonoBehaviour
     [SerializeField] private Image selectArea;
     [SerializeField] private Camera RTSPlayerCamera;
 
-    public static bool selectingUnits {get; private set;} = false;
-    private static Vector2 startMousePos;
+    public bool selectingUnits {get; private set;} = false;
+    private Vector2 startMousePos;
 
+
+    private Vector2 bottomLeft;
+    private Vector2 topRight;
+    private Rect selectionArea;
+
+    private List<UnitSelector.Unit> previouslySelected = null;
 
     void Update()
     {
         if(selectingUnits) updateArea();
-        else if(Input.GetMouseButton(0) && UIManager.canSelectArea()) startSelecting();
+        else if(Input.GetMouseButtonDown(0) && UIManager.canSelectArea()) startSelecting();
     }
 
 //Updates the script's state
@@ -26,6 +33,8 @@ public class AreaUnitSelector : MonoBehaviour
         selectArea.enabled = true;
         selectArea.rectTransform.position = startMousePos;
 
+        if(Input.GetKey(KeyCode.LeftControl)) previouslySelected = new List<UnitSelector.Unit>(UnitSelector.selectedUnits);
+
         //First frame refresh
         updateArea();
     }
@@ -35,6 +44,7 @@ public class AreaUnitSelector : MonoBehaviour
     {
         selectingUnits = false;
         selectArea.enabled = false;
+        previouslySelected = null;
     }
 
 //Refreshes the selection area that the RTS player can see
@@ -47,9 +57,6 @@ public class AreaUnitSelector : MonoBehaviour
         }
 
         Vector3 pos = Input.mousePosition;
-
-        Vector2 bottomLeft;
-        Vector2 topRight;
 
         if(startMousePos.x < pos.x) 
         {
@@ -76,14 +83,19 @@ public class AreaUnitSelector : MonoBehaviour
         RectTransform trans = selectArea.rectTransform;
         trans.position = bottomLeft;
         trans.sizeDelta = (topRight - bottomLeft);
+
+        selectionArea = new Rect(bottomLeft, trans.sizeDelta);
+        getUnitsInSelection();
     }
 
     private void getUnitsInSelection()
     {
-        // foreach(Unit u in units)
-        // {
-        //     Instance.RTSPlayerCamera.WorldToScreenPoint(u.transform.position);
-        //     //TODO
-        // }
+        UnitSelector.deselectUnits();
+        foreach(UnitSelector.Unit u in UnitSelector.units.Values)
+            if(selectionArea.Contains(RTSPlayerCamera.WorldToScreenPoint(u.transform.position)))
+                UnitSelector.selectUnit(u, true);
+        if(previouslySelected != null)
+            foreach(UnitSelector.Unit u in previouslySelected)
+                UnitSelector.selectUnit(u, true);
     }
 }

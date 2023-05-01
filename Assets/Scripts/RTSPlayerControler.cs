@@ -55,7 +55,7 @@ public class RTSPlayerControler : MonoBehaviour
         transform.position = posNew;
 
         //Rotate camera
-        if(Input.GetMouseButton(1)) {
+        if(Input.GetMouseButton(2)) {
             float mouseX = Input.GetAxisRaw("Mouse X");
 
             Vector3 angles = transform.eulerAngles;
