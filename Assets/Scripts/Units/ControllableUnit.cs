@@ -13,20 +13,17 @@ public class ControllableUnit : MonoBehaviour
     {
         agent = gameObject.GetComponent<NavMeshAgent>();
         agent.enabled = false;
-        Debug.Log("Disabled " + agent);
         UnitSelector.addUnit(this);
     }
 
     public void place()
     {
-        Debug.Log("Placed " + agent);
         agent.enabled = true;
     }
 
     public void setDestination(Vector3 destination) {
         goal = destination;
         agent.SetDestination(goal);
-        Debug.Log("Destination " + agent);
     }
 
     void OnDestroy()

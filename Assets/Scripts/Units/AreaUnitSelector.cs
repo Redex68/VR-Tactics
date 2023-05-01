@@ -11,6 +11,7 @@ public class AreaUnitSelector : MonoBehaviour
 
     public bool selectingUnits {get; private set;} = false;
     private Vector2 startMousePos;
+    private bool mouseMoved = false;
 
 
     private Vector2 bottomLeft;
@@ -45,6 +46,7 @@ public class AreaUnitSelector : MonoBehaviour
         selectingUnits = false;
         selectArea.enabled = false;
         previouslySelected = null;
+        mouseMoved = false;
     }
 
 //Refreshes the selection area that the RTS player can see
@@ -83,6 +85,13 @@ public class AreaUnitSelector : MonoBehaviour
         RectTransform trans = selectArea.rectTransform;
         trans.position = bottomLeft;
         trans.sizeDelta = (topRight - bottomLeft);
+
+        if(!mouseMoved)
+        {
+            if(Input.mousePosition.x != startMousePos.x || Input.mousePosition.y != startMousePos.y)
+                mouseMoved = true;
+            else return;
+        }
 
         selectionArea = new Rect(bottomLeft, trans.sizeDelta);
         getUnitsInSelection();
