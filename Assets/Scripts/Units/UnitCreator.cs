@@ -133,7 +133,7 @@ public class UnitCreator : MonoBehaviour
 /// the object's colliders).
 /// </summary>
     private void placeDownUnit() {
-        beingPlaced.unit.layer = 1;
+        beingPlaced.unit.layer = 0;
         foreach (Collider collider in beingPlaced.colliders) collider.enabled = true;
 
         ControllableUnit script = beingPlaced.unit.GetComponent<ControllableUnit>();
