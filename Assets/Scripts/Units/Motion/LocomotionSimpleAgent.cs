@@ -9,6 +9,7 @@ public class LocomotionSimpleAgent : MonoBehaviour {
     NavMeshAgent agent;
     Vector2 smoothDeltaPosition = Vector2.zero;
     Vector2 velocity = Vector2.zero;
+    LookAt lookAt;
 
     void Start ()
     {
@@ -16,6 +17,8 @@ public class LocomotionSimpleAgent : MonoBehaviour {
         agent = GetComponent<NavMeshAgent> ();
         // Don’t update position automatically
         agent.updatePosition = false;
+        
+        lookAt = GetComponent<LookAt>();
     }
     
     void Update ()
@@ -42,7 +45,7 @@ public class LocomotionSimpleAgent : MonoBehaviour {
         anim.SetFloat("vely", velocity.y);
         anim.SetFloat("vel", velocity.magnitude);
 
-        GetComponent<LookAt>().lookAtTargetPosition = agent.steeringTarget + transform.forward;
+        lookAt.lookAtTargetPosition = agent.steeringTarget + transform.forward;
     }
 
     void OnAnimatorMove ()
