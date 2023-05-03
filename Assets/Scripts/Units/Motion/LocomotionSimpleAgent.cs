@@ -42,4 +42,9 @@ public class LocomotionSimpleAgent : MonoBehaviour {
         // Update position to agent position
         transform.position = agent.nextPosition;
     }
+
+    public void died()
+    {
+        agent.isStopped = true;
+    }
 }

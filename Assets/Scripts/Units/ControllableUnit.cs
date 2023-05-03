@@ -15,6 +15,7 @@ public class ControllableUnit : MonoBehaviour
     private Transform VRPlayerController;
     public LayerMask mask;
     private float time = 0;
+    private bool dead = false;
 
 
     // Start is called before the first frame update
@@ -30,7 +31,8 @@ public class ControllableUnit : MonoBehaviour
 
     void Update()
     {
-        if(agent.isOnNavMesh && agent.remainingDistance < 0.2)
+        Debug.Log(dead);
+        if(agent.isOnNavMesh && agent.remainingDistance < 0.2 && !dead)
         {
             Vector3 playerRelativePos = VRPlayerController.position - weaponMuzzle.transform.position;
             Ray ray = new Ray(weaponMuzzle.transform.position, playerRelativePos);
@@ -70,5 +72,10 @@ public class ControllableUnit : MonoBehaviour
     void OnDestroy()
     {
         UnitSelector.removeUnit(this);
+    }
+
+    public void died()
+    {
+        dead = true;
     }
 }
