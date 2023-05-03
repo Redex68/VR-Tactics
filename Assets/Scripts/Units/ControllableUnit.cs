@@ -31,7 +31,6 @@ public class ControllableUnit : MonoBehaviour
 
     void Update()
     {
-        Debug.Log(dead);
         if(agent.isOnNavMesh && agent.remainingDistance < 0.2 && !dead)
         {
             Vector3 playerRelativePos = VRPlayerController.position - weaponMuzzle.transform.position;

@@ -3102,7 +3102,7 @@ MonoBehaviour:
   MuzzleFlashObject: {fileID: 4868165114780687775}
   BulletCasingPrefab: {fileID: 1282233564399203881, guid: e6d6d8266008ffe438ce58f774e874fa,
     type: 3}
-  ProjectilePrefab: {fileID: 1449094533667961452, guid: 4af46545725f628459794cfc7c0f7d54,
+  ProjectilePrefab: {fileID: 1449094533667961452, guid: 6afc7951bf74b6f48a011abb699f9a90,
     type: 3}
   HitFXPrefab: {fileID: 3454612190511497970, guid: 4398033e6ed398744a03f07804fb687c,
     type: 3}
