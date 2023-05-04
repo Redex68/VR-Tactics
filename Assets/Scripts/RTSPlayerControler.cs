@@ -20,7 +20,6 @@ public class RTSPlayerControler : MonoBehaviour
     [Tooltip("An arbitrary number that represents the maximum distance the RTS player can zoom in by.")]
     [SerializeField] float minHeight;
     [SerializeField] CustomBounds cameraBounds;
-    [SerializeField] Terrain terrain;
     private float defaultLocalZ;
     private Renderer[] playerRenderers;
     private Camera RTSCamera;
@@ -92,7 +91,6 @@ public class RTSPlayerControler : MonoBehaviour
         return Mathf.InverseLerp(minHeight, maxHeight, desiredY) + 1;
     }
 
-    private bool continuouslyRaisingCamera = false;
     private void validatePos(ref Vector3 pos, Vector3 original)
     {
         if(pos.x <= cameraBounds.xMin
@@ -109,7 +107,7 @@ public class RTSPlayerControler : MonoBehaviour
         offsetPos.y += 150f;
         Physics.Raycast(offsetPos, Vector3.down, out hit, 300f);
         float height = hit.point.y + 5f;
-        
+
         if(height > pos.y) pos.y = height;
     }
 }

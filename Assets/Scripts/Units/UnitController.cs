@@ -4,8 +4,19 @@ using UnityEngine;
 
 public class UnitController : MonoBehaviour
 {
-    [SerializeField] public Camera RTSPlayerCamera;
-    // Update is called once per frame
+    private Camera RTSPlayerCamera;
+
+    void Start()
+    {
+        UnitSelector script = GetComponent<UnitSelector>();
+        if(!script) 
+        {
+            Debug.LogError("Game object doesn't contain a UnitSelector script.");
+            Destroy(this);
+        }
+        RTSPlayerCamera = script.RTSPlayerCamera;
+    }
+
     void Update()
     {
         if(Input.GetMouseButtonDown(1))

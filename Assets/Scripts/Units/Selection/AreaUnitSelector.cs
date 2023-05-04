@@ -7,18 +7,29 @@ using UnityEngine.UI;
 public class AreaUnitSelector : MonoBehaviour
 {
     [SerializeField] private Image selectArea;
-    [SerializeField] private Camera RTSPlayerCamera;
 
     public bool selectingUnits {get; private set;} = false;
     private Vector2 startMousePos;
     private bool mouseMoved = false;
 
 
+    private Camera RTSPlayerCamera;
     private Vector2 bottomLeft;
     private Vector2 topRight;
     private Rect selectionArea;
 
     private List<UnitSelector.Unit> previouslySelected = null;
+
+    void Start()
+    {
+        UnitSelector script = GetComponent<UnitSelector>();
+        if(!script) 
+        {
+            Debug.LogError("Game object doesn't contain a UnitSelector script.");
+            Destroy(this);
+        }
+        RTSPlayerCamera = script.RTSPlayerCamera;
+    }
 
     void Update()
     {

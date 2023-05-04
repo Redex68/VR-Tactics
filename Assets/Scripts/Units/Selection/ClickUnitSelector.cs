@@ -4,7 +4,18 @@ using UnityEngine;
 
 public class ClickUnitSelector : MonoBehaviour
 {
-    [SerializeField] Camera RTSPlayerCamera;
+    private Camera RTSPlayerCamera;
+
+    void Start()
+    {
+        UnitSelector script = GetComponent<UnitSelector>();
+        if(!script) 
+        {
+            Debug.LogError("Game object doesn't contain a UnitSelector script.");
+            Destroy(this);
+        }
+        RTSPlayerCamera = script.RTSPlayerCamera;
+    }
 
     // Update is called once per frame
     void Update()

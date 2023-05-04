@@ -5,7 +5,7 @@ using UnityEngine;
 
 public class UnitSelector : MonoBehaviour
 {
-    public static UnitSelector Instance;
+    [SerializeField] public Camera RTSPlayerCamera;
 
     public struct Unit {
         public ControllableUnit script;
@@ -19,11 +19,14 @@ public class UnitSelector : MonoBehaviour
             marker = script.transform.Find("Marker").gameObject;
         }
     }
-    
+
+    public static UnitSelector Instance;
+
     //A list containing all of the selectable units in the game
     public static Dictionary<ControllableUnit, Unit> units = new Dictionary<ControllableUnit, Unit>();
     //A list containing all of the currently selected units
     public static List<Unit> selectedUnits {get;} = new List<Unit>();
+
 
     void Awake()
     {
