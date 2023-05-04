@@ -14,6 +14,7 @@ public class ControllableUnit : MonoBehaviour
     private RaycastWeapon weaponScript;
     private Transform VRPlayerController;
     public LayerMask mask;
+    private static int playerLayer;
     private float time = 0;
     private bool dead = false;
 
@@ -25,6 +26,7 @@ public class ControllableUnit : MonoBehaviour
         agent.enabled = false;
         weaponScript = weaponMuzzle.GetComponentInParent<RaycastWeapon>();
         VRPlayerController = GameObject.Find("VR Player/PlayerController").transform;
+        playerLayer = LayerMask.NameToLayer("Player");
 
         UnitSelector.addUnit(this);
     }
@@ -36,7 +38,7 @@ public class ControllableUnit : MonoBehaviour
             Vector3 playerRelativePos = VRPlayerController.position - weaponMuzzle.transform.position;
             Ray ray = new Ray(weaponMuzzle.transform.position, playerRelativePos);
             RaycastHit hit;
-            if(Physics.Raycast(ray, out hit, 100, mask) && hit.transform.gameObject.layer == LayerMask.NameToLayer("Player"))
+            if(Physics.Raycast(ray, out hit, 100, mask) && hit.transform.gameObject.layer == playerLayer)
             {
                 Vector3 fwd = weaponMuzzle.transform.forward;
                 playerRelativePos.y = 0;
@@ -53,8 +55,11 @@ public class ControllableUnit : MonoBehaviour
                         time = Time.time;
                         weaponScript.Shoot();
                     }
+                    Debug.DrawLine(weaponMuzzle.transform.position, transform.position + playerRelativePos, Color.green);
                 }
+                else Debug.DrawLine(weaponMuzzle.transform.position, transform.position + playerRelativePos, Color.red);
             }
+            else Debug.DrawLine(weaponMuzzle.transform.position, transform.position + playerRelativePos, Color.red);
         }
     }
 

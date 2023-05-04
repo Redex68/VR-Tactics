@@ -1,31 +1,41 @@
+using System.Net;
 using System.Collections;
 using System.Collections.Generic;
+using System;
 using UnityEngine;
 
 public class RTSPlayerControler : MonoBehaviour
 {
+    [Serializable]
+    private struct CustomBounds
+    {
+        [SerializeField] public float xMin;
+        [SerializeField] public float xMax;
+        [SerializeField] public float zMin;
+        [SerializeField] public float zMax;
+    }
 
     [Tooltip("An arbitrary number that represents the maximum distance the RTS player can zoom out by.")]
-    [SerializeField] float maxDistance = 250f;
+    [SerializeField] float maxHeight;
     [Tooltip("An arbitrary number that represents the maximum distance the RTS player can zoom in by.")]
-    [SerializeField] float minDistance = 200f;
-    [SerializeField] Sprite EnemyMarker;
-    private float zoom;
+    [SerializeField] float minHeight;
+    [SerializeField] CustomBounds cameraBounds;
+    [SerializeField] Terrain terrain;
     private float defaultLocalZ;
     private Renderer[] playerRenderers;
     private Camera RTSCamera;
     private RectTransform markerTransform;
+    private float zoom;
+    private float desiredY;
     // Start is called before the first frame update
     void Start()
     {
-        // Canvas canvas = GameObject.Find("RTS Player Canvas").GetComponent<Canvas>();
-        // canvas.worldCamera = gameObject.GetComponentInChildren<Camera>();
-
         playerRenderers = GameObject.Find("PlayerController").GetComponentsInChildren<Renderer>();
         RTSCamera = GetComponentInChildren<Camera>();
         markerTransform = GameObject.Find("EnemyMarker").GetComponent<RectTransform>();
         defaultLocalZ = transform.localPosition.z;
-        zoom = minDistance;
+        desiredY = transform.position.y;
+        zoom = calculateZoom();
     }
 
     // Update is called once per frame
@@ -35,24 +45,32 @@ public class RTSPlayerControler : MonoBehaviour
         float forwardMovement = Input.GetAxisRaw("Vertical");
         float sideMovement = Input.GetAxisRaw("Horizontal");
 
+
         Vector3 posNew = transform.position;
-        float coef = 12500.0f / zoom * Time.deltaTime;
+        float coef = (Input.GetKey(KeyCode.LeftShift) == true ? 50.0f : 25.0f) * zoom * Time.deltaTime;
         Vector3 moveDir = transform.forward;
         moveDir.y = 0;
         Vector3 sidewaysDir = transform.right;
         sidewaysDir.y = 0;
         moveDir = (moveDir * forwardMovement + sidewaysDir * sideMovement).normalized;
-
         posNew += moveDir * coef;
 
         //Zoom in
-        float scroll = Input.GetAxis("Mouse ScrollWheel") * 12500.0f * Time.deltaTime;
+        float scroll = Input.GetAxis("Mouse ScrollWheel") * 7500.0f * Time.deltaTime;
 
-        if(zoom <= minDistance && scroll >= 0 || zoom >= maxDistance && scroll <= 0 || zoom >= minDistance && zoom <= maxDistance) {
-            zoom += scroll;
-            posNew += scroll * transform.forward;
+        Vector3 move = scroll * transform.forward;
+        if(desiredY + move.y >= minHeight && desiredY + move.y <= maxHeight)
+        {
+            zoom = calculateZoom();
+            desiredY += move.y;
+
+            posNew += move;
+            posNew.y = desiredY;
         }
+        validatePos(ref posNew, transform.position);
+
         transform.position = posNew;
+
 
         //Rotate camera
         if(Input.GetMouseButton(2)) {
@@ -67,5 +85,31 @@ public class RTSPlayerControler : MonoBehaviour
         Bounds bounds = Util.getBounds(playerRenderers);
         Vector2 posOnScreen = Util.getMarkerPos(bounds, RTSCamera);
         markerTransform.position = posOnScreen + new Vector2(0, 10);
+    }
+    
+    private float calculateZoom()
+    {
+        return Mathf.InverseLerp(minHeight, maxHeight, desiredY) + 1;
+    }
+
+    private bool continuouslyRaisingCamera = false;
+    private void validatePos(ref Vector3 pos, Vector3 original)
+    {
+        if(pos.x <= cameraBounds.xMin
+        || pos.x >= cameraBounds.xMax)
+            pos.x = original.x;
+
+        if(pos.z <= cameraBounds.zMin
+        || pos.z >= cameraBounds.zMax)
+            pos.z = original.z;
+
+        Ray ray = new Ray(transform.position, Vector3.down);
+        RaycastHit hit;
+        Vector3 offsetPos = pos;
+        offsetPos.y += 150f;
+        Physics.Raycast(offsetPos, Vector3.down, out hit, 300f);
+        float height = hit.point.y + 5f;
+        
+        if(height > pos.y) pos.y = height;
     }
 }
