@@ -11,25 +11,14 @@ public class AreaUnitSelector : MonoBehaviour
     public bool selectingUnits {get; private set;} = false;
     private Vector2 startMousePos;
     private bool mouseMoved = false;
+    private bool deselecting = false;
+    private bool appending = false;
 
-
-    private Camera RTSPlayerCamera;
     private Vector2 bottomLeft;
     private Vector2 topRight;
     private Rect selectionArea;
 
     private List<UnitSelector.Unit> previouslySelected = null;
-
-    void Start()
-    {
-        UnitSelector script = GetComponent<UnitSelector>();
-        if(!script) 
-        {
-            Debug.LogError("Game object doesn't contain a UnitSelector script.");
-            Destroy(this);
-        }
-        RTSPlayerCamera = script.RTSPlayerCamera;
-    }
 
     void Update()
     {
@@ -45,7 +34,16 @@ public class AreaUnitSelector : MonoBehaviour
         selectArea.enabled = true;
         selectArea.rectTransform.position = startMousePos;
 
-        if(Input.GetKey(KeyCode.LeftControl)) previouslySelected = new List<UnitSelector.Unit>(UnitSelector.selectedUnits);
+        if(Input.GetKey(UnitSelector.Instance.deselectKey))
+        {
+            deselecting = true;
+            previouslySelected = new List<UnitSelector.Unit>(UnitSelector.selectedUnits);
+        }
+        else if(Input.GetKey(UnitSelector.Instance.multiSelectKey))
+        {
+            appending = true;
+            previouslySelected = new List<UnitSelector.Unit>(UnitSelector.selectedUnits);
+        }
 
         //First frame refresh
         updateArea();
@@ -58,6 +56,8 @@ public class AreaUnitSelector : MonoBehaviour
         selectArea.enabled = false;
         previouslySelected = null;
         mouseMoved = false;
+        deselecting = false;
+        appending = false;
     }
 
 //Refreshes the selection area that the RTS player can see
@@ -99,7 +99,7 @@ public class AreaUnitSelector : MonoBehaviour
 
         if(!mouseMoved)
         {
-            if(Input.mousePosition.x != startMousePos.x || Input.mousePosition.y != startMousePos.y)
+            if(Mathf.Abs(Input.mousePosition.x - startMousePos.x) > 2 || Mathf.Abs(Input.mousePosition.y - startMousePos.y) > 2)
                 mouseMoved = true;
             else return;
         }
@@ -110,12 +110,17 @@ public class AreaUnitSelector : MonoBehaviour
 
     private void getUnitsInSelection()
     {
-        UnitSelector.deselectUnits();
-        foreach(UnitSelector.Unit u in UnitSelector.units.Values)
-            if(selectionArea.Contains(RTSPlayerCamera.WorldToScreenPoint(u.transform.position)))
-                UnitSelector.selectUnit(u, true);
-        if(previouslySelected != null)
+        UnitSelector.deselectAllUnits();
+        if(deselecting || appending)
             foreach(UnitSelector.Unit u in previouslySelected)
                 UnitSelector.selectUnit(u, true);
+        foreach(UnitSelector.Unit u in UnitSelector.units.Values)
+            if(selectionArea.Contains(UnitSelector.Instance.RTSPlayerCamera.WorldToScreenPoint(u.transform.position)))
+            {
+                if(deselecting)
+                    UnitSelector.deselectUnit(u);
+                else
+                    UnitSelector.selectUnit(u, true);
+            }
     }
 }

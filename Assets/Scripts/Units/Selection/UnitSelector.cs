@@ -6,6 +6,8 @@ using UnityEngine;
 public class UnitSelector : MonoBehaviour
 {
     [SerializeField] public Camera RTSPlayerCamera;
+    [SerializeField] public KeyCode multiSelectKey;
+    [SerializeField] public KeyCode deselectKey;
 
     public struct Unit {
         public ControllableUnit script;
@@ -57,23 +59,35 @@ public class UnitSelector : MonoBehaviour
 
     public static void selectUnit(ControllableUnit unit, bool append)
     {
-        if(!append) deselectUnits();
-        selectUnit(units[unit]);
+        if(!append) deselectAllUnits();
+        Unit _unit = units[unit];
+
+        selectedUnits.Add(_unit);
+        _unit.marker.SetActive(true);
     }
 
     public static void selectUnit(Unit unit, bool append)
     {
-        if(!append) deselectUnits();
-        selectUnit(unit);
-    }
-
-    private static void selectUnit(Unit unit)
-    {
+        if(!append) deselectAllUnits();
+        
         selectedUnits.Add(unit);
         unit.marker.SetActive(true);
     }
 
-    public static void deselectUnits()
+    public static void deselectUnit(ControllableUnit unit)
+    {
+        Unit _unit = units[unit];
+        _unit.marker.SetActive(false);
+        selectedUnits.Remove(_unit);
+    }
+
+    public static void deselectUnit(Unit unit)
+    {
+        unit.marker.SetActive(false);
+        selectedUnits.Remove(unit);
+    }
+
+    public static void deselectAllUnits()
     {
         foreach(Unit u in selectedUnits)
             u.marker.SetActive(false);

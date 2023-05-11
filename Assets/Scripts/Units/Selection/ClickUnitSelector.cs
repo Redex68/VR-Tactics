@@ -4,33 +4,26 @@ using UnityEngine;
 
 public class ClickUnitSelector : MonoBehaviour
 {
-    private Camera RTSPlayerCamera;
-
-    void Start()
-    {
-        UnitSelector script = GetComponent<UnitSelector>();
-        if(!script) 
-        {
-            Debug.LogError("Game object doesn't contain a UnitSelector script.");
-            Destroy(this);
-        }
-        RTSPlayerCamera = script.RTSPlayerCamera;
-    }
-
     // Update is called once per frame
     void Update()
     {
         if(Input.GetMouseButtonDown(0) && UIManager.canSelectArea())
         {
-            Ray ray = RTSPlayerCamera.ScreenPointToRay(Input.mousePosition);
+            Ray ray = UnitSelector.Instance.RTSPlayerCamera.ScreenPointToRay(Input.mousePosition);
             RaycastHit hit;
             ControllableUnit unit = null;
             if(Physics.Raycast(ray, out hit) && (unit = hit.transform.GetComponentInParent<ControllableUnit>()) != null)
             {
-                bool append = Input.GetKey(KeyCode.LeftControl);
-                UnitSelector.selectUnit(unit, append);
+                if(Input.GetKey(UnitSelector.Instance.deselectKey))
+                    UnitSelector.deselectUnit(unit);
+                else
+                {
+                    bool append = Input.GetKey(UnitSelector.Instance.multiSelectKey);
+                    UnitSelector.selectUnit(unit, append);
+                }
             }
-            else UnitSelector.deselectUnits();
+            else if(!Input.GetKey(UnitSelector.Instance.deselectKey) && !Input.GetKey(UnitSelector.Instance.multiSelectKey))
+                UnitSelector.deselectAllUnits();
         }
     }
 }
