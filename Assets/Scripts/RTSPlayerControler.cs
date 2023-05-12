@@ -29,7 +29,7 @@ public class RTSPlayerControler : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        playerRenderers = GameObject.Find("PlayerController").GetComponentsInChildren<Renderer>();
+        playerRenderers = GameObject.Find("VR Player/BodyIK").GetComponentsInChildren<Renderer>();
         RTSCamera = GetComponentInChildren<Camera>();
         markerTransform = GameObject.Find("EnemyMarker").GetComponent<RectTransform>();
         defaultLocalZ = transform.localPosition.z;
@@ -83,7 +83,10 @@ public class RTSPlayerControler : MonoBehaviour
         //Move the marker that denotes the player
         Bounds bounds = Util.getBounds(playerRenderers);
         Vector2 posOnScreen = Util.getMarkerPos(bounds, RTSCamera);
-        markerTransform.position = posOnScreen + new Vector2(0, 10);
+        
+        //Util.drawBounds(bounds);
+
+        markerTransform.position = posOnScreen;
     }
     
     private float calculateZoom()

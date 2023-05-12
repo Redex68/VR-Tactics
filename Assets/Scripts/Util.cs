@@ -52,4 +52,34 @@ public class Util {
         ScreenSpaceCoords[6] = camera.WorldToScreenPoint(new Vector3(bounds.center.x - bounds.extents.x, bounds.center.y - bounds.extents.y, bounds.center.z + bounds.extents.z));
         ScreenSpaceCoords[7] = camera.WorldToScreenPoint(new Vector3(bounds.center.x - bounds.extents.x, bounds.center.y - bounds.extents.y, bounds.center.z - bounds.extents.z));
     }
+
+    public static void drawBounds(Bounds bounds)
+    {
+        Vector3 frontTopRight = new Vector3(bounds.center.x + bounds.extents.x, bounds.center.y + bounds.extents.y, bounds.center.z + bounds.extents.z);
+        Vector3 frontTopLeft = new Vector3(bounds.center.x + bounds.extents.x, bounds.center.y + bounds.extents.y, bounds.center.z - bounds.extents.z);
+        Vector3 frontBottomRight = new Vector3(bounds.center.x + bounds.extents.x, bounds.center.y - bounds.extents.y, bounds.center.z + bounds.extents.z);
+        Vector3 frontBottomLeft = new Vector3(bounds.center.x + bounds.extents.x, bounds.center.y - bounds.extents.y, bounds.center.z - bounds.extents.z);
+        Vector3 backTopRight = new Vector3(bounds.center.x - bounds.extents.x, bounds.center.y + bounds.extents.y, bounds.center.z + bounds.extents.z);
+        Vector3 backTopLeft = new Vector3(bounds.center.x - bounds.extents.x, bounds.center.y + bounds.extents.y, bounds.center.z - bounds.extents.z);
+        Vector3 backBottomRight = new Vector3(bounds.center.x - bounds.extents.x, bounds.center.y - bounds.extents.y, bounds.center.z + bounds.extents.z);
+        Vector3 backBottomLeft = new Vector3(bounds.center.x - bounds.extents.x, bounds.center.y - bounds.extents.y, bounds.center.z - bounds.extents.z);
+
+        //Draw top square
+        Debug.DrawLine(frontTopLeft, frontTopRight, Color.red);
+        Debug.DrawLine(frontTopRight, backTopRight, Color.red);
+        Debug.DrawLine(backTopRight, backTopLeft, Color.red);
+        Debug.DrawLine(backTopLeft, frontTopLeft, Color.red);
+        
+        //Draw bottom square
+        Debug.DrawLine(frontBottomLeft, frontBottomRight, Color.red);
+        Debug.DrawLine(frontBottomRight, backBottomRight, Color.red);
+        Debug.DrawLine(backBottomRight, backBottomLeft, Color.red);
+        Debug.DrawLine(backBottomLeft, frontBottomLeft, Color.red);
+
+        //Draw connecting lines
+        Debug.DrawLine(frontTopLeft, frontBottomLeft, Color.red);
+        Debug.DrawLine(frontTopRight, frontBottomRight, Color.red);
+        Debug.DrawLine(backTopLeft, backBottomLeft, Color.red);
+        Debug.DrawLine(backTopRight, backBottomRight, Color.red);
+    }
 }

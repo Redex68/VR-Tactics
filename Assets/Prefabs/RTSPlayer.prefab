@@ -29,7 +29,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1133014600662519802}
-  m_LocalRotation: {x: -0.00000013685818, y: 0.9238797, z: -0.38268322, w: -0.00000033040507}
+  m_LocalRotation: {x: 0, y: 0.92387956, z: -0.38268343, w: 0}
   m_LocalPosition: {x: 351.8, y: 350, z: -223.23}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -51,13 +51,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   maxHeight: 350
-  minHeight: 250
+  minHeight: 280
   cameraBounds:
     xMin: 0
     xMax: 450
     zMin: -600
     zMax: -210
-  terrain: {fileID: 0}
 --- !u!114 &1133014600662519807
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -84,6 +83,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 611a0ad637e569843a9c93a914e48666, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  RTSPlayerCamera: {fileID: 1133014600979189490}
+  multiSelectKey: 304
+  deselectKey: 306
 --- !u!114 &1133014600662519557
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -96,7 +98,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f731f1c4af5130f49b779513f02a6328, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  RTSPlayerCamera: {fileID: 1133014600979189490}
 --- !u!114 &1133014600662519555
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -110,7 +111,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   selectArea: {fileID: 0}
-  RTSPlayerCamera: {fileID: 1133014600979189490}
 --- !u!114 &1133014600662519554
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -123,7 +123,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cb27c8cb9dd8bd54ea7e71b57f15448d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  RTSPlayerCamera: {fileID: 1133014600979189490}
 --- !u!1 &1133014600979189488
 GameObject:
   m_ObjectHideFlags: 0
