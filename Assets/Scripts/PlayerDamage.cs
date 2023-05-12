@@ -8,10 +8,12 @@ using UnityEngine.UI;
 public class PlayerDamage : MonoBehaviour
 {
     [SerializeField] public Slider slider;
+    private TMPro.TMP_Text health;
     private BNG.Damageable dmg;
 
     void Start() {
         dmg = GetComponent<BNG.Damageable>();
+        health = slider.transform.Find("Health").GetComponent<TMPro.TMP_Text>();
         updateHealth();
     }
 
@@ -28,6 +30,6 @@ public class PlayerDamage : MonoBehaviour
     private void updateHealth()
     {
         slider.value = dmg.Health;
-        slider.transform.Find("Health").GetComponent<TMPro.TMP_Text>().text = ((int)dmg.Health) + "/250";
+        health.text = ((int)dmg.Health) + "/250";
     }
 }
