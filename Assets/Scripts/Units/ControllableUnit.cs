@@ -9,11 +9,11 @@ public class ControllableUnit : MonoBehaviour
 {
     [SerializeField] GameObject weaponMuzzle;
 
+    public LayerMask mask;
     private Vector3 goal;
     private NavMeshAgent agent;
     private RaycastWeapon weaponScript;
     private Transform VRPlayerController;
-    public LayerMask mask;
     private static int playerLayer;
     private float time = 0;
     private bool dead = false;
