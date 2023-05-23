@@ -11,8 +11,13 @@ public class UnitCreator : MonoBehaviour
     [SerializeField] public Camera RTSPlayer;
     [SerializeField] public KeyCode rotateKey = KeyCode.LeftShift;
     [SerializeField] public LayerMask placeRaycastTargets;
+    [SerializeField] public LayerMask placeableLayer;
+    [SerializeField] float minDistanceFromVRPlayer = 50.0f;
+    [SerializeField] Material placeableMaterial;
+    [SerializeField] Material notPlaceableMaterial;
 
     private static UnitCreator Instance;
+    private GameObject VRPlayer;
 
     private GameObject unit;
     //Whether a unit is currently being placed or not
@@ -23,10 +28,22 @@ public class UnitCreator : MonoBehaviour
         public GameObject unit;
         public List<Collider> colliders;
         public List<NavMeshObstacle> navmeshColliders;
+        public List<MaterialHolder> materials;
     };
+    private struct MaterialHolder {
+        public Renderer renderer;
+        public Material[] oldMaterials;
+
+        public MaterialHolder(Renderer renderer, Material[] materials)
+        {
+            this.renderer = renderer;
+            this.oldMaterials = materials;
+        }
+    }
+
     private bool rotatingUnit = false;
     private Vector2 rotationCenter;
-    private bool validPos;
+    private bool validPos = true;
 
     void Awake() {
         if(Instance != null && Instance != this) Destroy(this);
@@ -36,6 +53,8 @@ public class UnitCreator : MonoBehaviour
     void Start() {
         beingPlaced.colliders = new List<Collider>();
         beingPlaced.navmeshColliders = new List<NavMeshObstacle>();
+        beingPlaced.materials = new List<MaterialHolder>();
+        VRPlayer = GameObject.Find("VR Player/PlayerController");
     }
 
     void Update() {
@@ -78,16 +97,22 @@ public class UnitCreator : MonoBehaviour
     private void moveUnit() {
         Ray ray = RTSPlayer.ScreenPointToRay(Input.mousePosition);
         RaycastHit hitinfo;
+        bool wasValid = validPos;
 
         if(Physics.Raycast(ray, out hitinfo, 100.0f, placeRaycastTargets))
         {
-            validPos = hitinfo.transform.gameObject.layer == LayerMask.NameToLayer("Walkable");
+            validPos = ((1 << hitinfo.transform.gameObject.layer) & placeableLayer.value) != 0
+            && Vector3.Distance(hitinfo.point, VRPlayer.transform.position) > minDistanceFromVRPlayer;
+            
             beingPlaced.unit.transform.position = hitinfo.point;
         }
         else {
             validPos = false;
             beingPlaced.unit.transform.position = RTSPlayer.ScreenToWorldPoint(new Vector3(Input.mousePosition.x, Input.mousePosition.y, 50.0f));
         }
+        if(wasValid != validPos)
+            foreach(MaterialHolder holder in beingPlaced.materials)
+                holder.renderer.material = validPos ? placeableMaterial : notPlaceableMaterial;
     }
 
 /// <summary>
@@ -121,6 +146,7 @@ public class UnitCreator : MonoBehaviour
         float cameraAngle = Mathf.Atan2(RTSPlayer.transform.forward.x, RTSPlayer.transform.forward.z) * Mathf.Rad2Deg;
         beingPlaced.unit.transform.eulerAngles = new Vector3(0, cameraAngle - 90f, 0);
 
+        //Disable all colliders and save them
         beingPlaced.colliders.Clear();
         beingPlaced.navmeshColliders.Clear();
         Collider[] colliders = beingPlaced.unit.GetComponentsInChildren<Collider>();
@@ -136,6 +162,16 @@ public class UnitCreator : MonoBehaviour
                 beingPlaced.navmeshColliders.Add(obstacle);
             }
 
+        beingPlaced.materials.Clear();
+        Renderer[] renderers = beingPlaced.unit.GetComponentsInChildren<Renderer>();
+        foreach(Renderer renderer in renderers)
+        {
+            beingPlaced.materials.Add(new MaterialHolder(renderer, renderer.materials));
+            Material[] newMaterials = new Material[1];
+            newMaterials[0] = placeableMaterial;
+            renderer.materials = newMaterials;
+        }
+
         beingPlaced.unit.layer = 12;
     }
 
@@ -147,6 +183,7 @@ public class UnitCreator : MonoBehaviour
         beingPlaced.unit.layer = 0;
         foreach (Collider collider in beingPlaced.colliders) collider.enabled = true;
         foreach (NavMeshObstacle obstacle in beingPlaced.navmeshColliders) obstacle.enabled = true;
+        foreach (MaterialHolder holder in beingPlaced.materials) holder.renderer.materials = holder.oldMaterials;
 
         ControllableUnit script = beingPlaced.unit.GetComponent<ControllableUnit>();
         if(script != null) script.place();

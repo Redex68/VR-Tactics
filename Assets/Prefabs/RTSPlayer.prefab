@@ -73,7 +73,14 @@ MonoBehaviour:
   rotateKey: 304
   placeRaycastTargets:
     serializedVersion: 2
-    m_Bits: 22273
+    m_Bits: 18177
+  placeableLayer:
+    serializedVersion: 2
+    m_Bits: 16384
+  minDistanceFromVRPlayer: 50
+  placeableMaterial: {fileID: 2100000, guid: baf8d45ae039abe4b9d07b685cea1404, type: 2}
+  notPlaceableMaterial: {fileID: 2100000, guid: 51bdd20a837b7fc499e6f540db60faba,
+    type: 2}
 --- !u!114 &1133014600662519552
 MonoBehaviour:
   m_ObjectHideFlags: 0

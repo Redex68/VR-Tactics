@@ -44,9 +44,9 @@ public class ControllableUnit : MonoBehaviour
 
     void Update()
     {
-        checkIfPlayerInLOS();
         if(!dead && agent.isOnNavMesh)
         {
+            checkIfPlayerInLOS();
             if(!movedThisFrame && moving && agent.isOnNavMesh && agent.remainingDistance < agent.stoppingDistance && !dead)
             {
                 moving = false;
@@ -146,8 +146,6 @@ public class ControllableUnit : MonoBehaviour
         }
         else playerInLOS = false;
 
-        Debug.Log(playerRelativePos);
-        Debug.Log(playerRelativePos.magnitude);
         //If the player is close to the unit
         if(playerRelativePos.magnitude < minSpotDistance) 
         {

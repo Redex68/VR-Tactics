@@ -31978,9 +31978,9 @@ MonoBehaviour:
     type: 3}
   RifleClip: {fileID: 3393538753761876036, guid: 0116c3965a703db4cb19d8b573a7531b,
     type: 3}
-  CurrentPistolClips: 5
-  CurrentRifleClips: 5
-  CurrentShotgunShells: 30
+  CurrentPistolClips: 500
+  CurrentRifleClips: 500
+  CurrentShotgunShells: 6000
 --- !u!1 &4448938718498689958
 GameObject:
   m_ObjectHideFlags: 0
