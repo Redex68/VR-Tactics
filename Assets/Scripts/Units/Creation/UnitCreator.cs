@@ -10,6 +10,7 @@ public class UnitCreator : MonoBehaviour
 {
     [SerializeField] public Camera RTSPlayer;
     [SerializeField] public KeyCode rotateKey = KeyCode.LeftShift;
+    [SerializeField] public LayerMask placeRaycastTargets;
 
     private static UnitCreator Instance;
 
@@ -78,7 +79,7 @@ public class UnitCreator : MonoBehaviour
         Ray ray = RTSPlayer.ScreenPointToRay(Input.mousePosition);
         RaycastHit hitinfo;
 
-        if(Physics.Raycast(ray, out hitinfo))
+        if(Physics.Raycast(ray, out hitinfo, 100.0f, placeRaycastTargets))
         {
             validPos = hitinfo.transform.gameObject.layer == LayerMask.NameToLayer("Walkable");
             beingPlaced.unit.transform.position = hitinfo.point;

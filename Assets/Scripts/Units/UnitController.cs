@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class UnitController : MonoBehaviour
 {
+    [SerializeField] LayerMask moveRaycastTargets;
     private Camera RTSPlayerCamera;
 
     void Update()
@@ -12,7 +13,7 @@ public class UnitController : MonoBehaviour
         {
             Ray ray = UnitSelector.Instance.RTSPlayerCamera.ScreenPointToRay(Input.mousePosition);
             RaycastHit hit;
-            if(Physics.Raycast(ray, out hit))
+            if(Physics.Raycast(ray, out hit, 100.0f, moveRaycastTargets))
                 foreach(UnitSelector.Unit unit in UnitSelector.selectedUnits)
                     unit.script.setDestination(hit.point);
         }
