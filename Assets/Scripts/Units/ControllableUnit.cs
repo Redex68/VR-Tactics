@@ -8,9 +8,12 @@ using BNG;
 public class ControllableUnit : MonoBehaviour
 {
     [SerializeField] GameObject weaponMuzzle;
+    [SerializeField] float minSpotDistance = 7;
+    [SerializeField] float repositionDelay = 7;
+    [SerializeField] float repositionMaxDistance = 7;
+    [SerializeField] float playerPosMemoryTime = 15;
 
     public LayerMask mask;
-    private Vector3 goal;
     private NavMeshAgent agent;
     private RaycastWeapon weaponScript;
     private Transform VRPlayerController;
@@ -18,6 +21,14 @@ public class ControllableUnit : MonoBehaviour
     private float time = 0;
     private bool dead = false;
 
+    private float lastMoved = 0;
+    private bool moving = false;
+
+    private Vector3 lastKnownPlayerPos = Vector3.zero;
+    private bool playerInLOS = false;
+    private float lastPlayerSighting = 0;
+    private bool movingToLastKnown = false;
+    private bool movedThisFrame = false;
 
     // Start is called before the first frame update
     void Start()
@@ -33,44 +44,52 @@ public class ControllableUnit : MonoBehaviour
 
     void Update()
     {
-        if(agent.isOnNavMesh && agent.remainingDistance < 0.2 && !dead)
+        checkIfPlayerInLOS();
+        if(!dead && agent.isOnNavMesh)
         {
-            Vector3 playerRelativePos = VRPlayerController.position - weaponMuzzle.transform.position;
-            Ray ray = new Ray(weaponMuzzle.transform.position, playerRelativePos);
-            RaycastHit hit;
-            if(Physics.Raycast(ray, out hit, 100, mask) && hit.transform.gameObject.layer == playerLayer)
+            if(!movedThisFrame && moving && agent.isOnNavMesh && agent.remainingDistance < agent.stoppingDistance && !dead)
             {
-                Vector3 fwd = weaponMuzzle.transform.forward;
-                playerRelativePos.y = 0;
-                fwd.y = 0;
-
-                float angle = Vector3.SignedAngle(fwd, playerRelativePos, Vector3.up);
-
-                if(MathF.Abs(angle) < 90)
-                {
-                    transform.eulerAngles += Vector3.up * Mathf.Clamp(angle, -Time.deltaTime * 720, Time.deltaTime * 720);
-
-                    if(Time.time - time > 1)
-                    {
-                        time = Time.time;
-                        weaponScript.Shoot();
-                    }
-                    Debug.DrawLine(weaponMuzzle.transform.position, transform.position + playerRelativePos, Color.green);
-                }
-                else Debug.DrawLine(weaponMuzzle.transform.position, transform.position + playerRelativePos, Color.red);
+                moving = false;
+                movingToLastKnown = false;
+                lastMoved = Time.time;
             }
-            else Debug.DrawLine(weaponMuzzle.transform.position, transform.position + playerRelativePos, Color.red);
+
+            if(!moving)
+            {
+                if(playerInLOS) turnAndShoot();
+                else if(!movingToLastKnown) goToLastKnown();
+
+                if(playerInLOS && Time.time - lastMoved > repositionDelay)
+                {
+                    Vector3 playerDir = VRPlayerController.transform.position - transform.position;
+                    playerDir.y = 0;
+                    playerDir.Normalize();
+
+                    Vector3 newPos = Util.randomPosition(transform.position, repositionMaxDistance) - playerDir * repositionMaxDistance * 0.25f;
+                    if(newPos != Vector3.zero) setDestination(newPos);
+                }
+                
+            }
+            else if(playerInLOS && movingToLastKnown) 
+            {
+                movingToLastKnown = false;
+                setDestination(transform.position + agent.velocity / 2);
+            }
         }
+        movedThisFrame = false;
     }
 
     public void place()
     {
         agent.enabled = true;
+        lastMoved = Time.time;
+        lastPlayerSighting = Time.time;
     }
 
     public void setDestination(Vector3 destination) {
-        goal = destination;
-        agent.SetDestination(goal);
+        agent.SetDestination(destination);
+        moving = true;
+        movedThisFrame = true;
     }
 
     void OnDestroy()
@@ -81,5 +100,77 @@ public class ControllableUnit : MonoBehaviour
     public void died()
     {
         dead = true;
+    }
+
+    private void turnAndShoot()
+    {
+        float angle = getAngle(VRPlayerController.position, weaponMuzzle.transform.position, weaponMuzzle.transform.forward);
+        transform.eulerAngles += Vector3.up * Mathf.Clamp(angle, -Time.deltaTime * 720, Time.deltaTime * 720);
+
+        if(Time.time - time > 1 && angle < 2)
+        {
+            time = Time.time;
+            weaponScript.Shoot();
+        }
+    }
+
+    private void goToLastKnown()
+    {
+        if(lastKnownPlayerPos == Vector3.zero) return;
+        setDestination(lastKnownPlayerPos);
+        movingToLastKnown = true;
+        //float angle = getAngle(lastKnownPlayerPos, weaponMuzzle.transform.position, weaponMuzzle.transform.forward);
+        //transform.eulerAngles += Vector3.up * Mathf.Clamp(angle, -Time.deltaTime * 720, Time.deltaTime * 720);
+    }
+
+    private void checkIfPlayerInLOS()
+    {
+        Vector3 playerRelativePos = VRPlayerController.position - weaponMuzzle.transform.position;
+        Ray ray = new Ray(weaponMuzzle.transform.position, playerRelativePos);
+        RaycastHit hit;
+        if(Physics.Raycast(ray, out hit, 100, mask) && hit.transform.gameObject.layer == playerLayer)
+        {
+            Vector3 fwd = weaponMuzzle.transform.forward;
+            playerRelativePos.y = 0;
+            fwd.y = 0;
+
+            //If dot product is positive, the player is infront
+            if(Vector3.Dot(fwd, playerRelativePos) > 0)
+            {
+                playerSighted();
+                //Don't run away if the player showed up in front
+                lastMoved = Time.time;
+                return;
+            }
+            else playerInLOS = false;
+        }
+        else playerInLOS = false;
+
+        Debug.Log(playerRelativePos);
+        Debug.Log(playerRelativePos.magnitude);
+        //If the player is close to the unit
+        if(playerRelativePos.magnitude < minSpotDistance) 
+        {
+            playerSighted();
+            return;
+        }
+
+        if(Time.time - lastPlayerSighting > playerPosMemoryTime) lastKnownPlayerPos = Vector3.zero;
+    }
+    
+    private void playerSighted()
+    {
+        playerInLOS = true;
+        lastPlayerSighting = Time.time;
+        lastKnownPlayerPos = VRPlayerController.position;
+    }
+
+    private static float getAngle(Vector3 player, Vector3 weaponMuzzle, Vector3 weaponForward)
+    {
+        Vector3 playerRelativePos = player - weaponMuzzle;
+        playerRelativePos.y = 0;
+        weaponForward.y = 0;
+
+        return Vector3.SignedAngle(weaponForward, playerRelativePos, Vector3.up);
     }
 }

@@ -1,5 +1,6 @@
 using System;
 using UnityEngine;
+using UnityEngine.AI;
 
 
 public class Util {
@@ -81,5 +82,26 @@ public class Util {
         Debug.DrawLine(frontTopRight, frontBottomRight, Color.red);
         Debug.DrawLine(backTopLeft, backBottomLeft, Color.red);
         Debug.DrawLine(backTopRight, backBottomRight, Color.red);
+    }
+
+    /// <summary>
+    /// Returns a random point on a navmesh in a circle around the specified position.
+    /// </summary>
+    /// <param name="position">The point around which the new point will be generated</param>
+    /// <param name="radius">The maximum distance from position that the new position can be</param>
+    /// <returns>A random position on a navmesh in a radius of radius, or Vector3.zero if the task failed</returns>
+    public static Vector3 randomPosition(Vector3 position, float radius)
+    {
+        //Try at least 4 times
+        for(int i = 0; i < 4; i++)
+        {
+            Vector2 randPos = UnityEngine.Random.insideUnitCircle * radius;
+            Vector3 pos = position + new Vector3(randPos.x, 0, randPos.y);
+            NavMeshHit hit;
+            if(NavMesh.SamplePosition(pos, out hit, 2.0f, NavMesh.AllAreas))
+                return hit.position;
+        }
+        
+        return Vector3.zero;
     }
 }

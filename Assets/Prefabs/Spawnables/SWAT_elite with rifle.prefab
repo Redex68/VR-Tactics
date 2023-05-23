@@ -4479,18 +4479,7 @@ Animator:
   m_ApplyRootMotion: 1
   m_LinearVelocityBlending: 0
   m_StabilizeFeet: 0
-  m_WarningMessage: "\nBinding warning: Some generic clip(s) animate transforms that
-    are already bound by a Humanoid avatar. These transforms can only be changed
-    by Humanoid clips.\n\tTransform 'mixamorig:Hips'\n\tTransform 'mixamorig:LeftFoot'\n\tTransform
-    'mixamorig:LeftHandThumb2'\n\tTransform 'mixamorig:LeftHandIndex1'\n\tTransform
-    'mixamorig:LeftHandPinky2'\n\tTransform 'mixamorig:RightHandRing2'\n\tTransform
-    'mixamorig:Spine1'\n\tTransform 'mixamorig:LeftToeBase'\n\tTransform 'mixamorig:LeftHandThumb3'\n\tTransform
-    'mixamorig:RightArm'\n\tand more ...\n\tFrom animation clip 'Run Forward'\n\tFrom
-    animation clip 'Run Left'\n\tFrom animation clip 'Run Right'\n\tFrom animation
-    clip 'Backwards Rifle Run'\n\tFrom animation clip 'Walking'\n\tFrom animation
-    clip 'rifle aiming idle'\n\tFrom animation clip 'Walking'\n\tFrom animation clip
-    'Strafe Left'\n\tFrom animation clip 'Strafe Right'\n\tFrom animation clip 'Walking
-    Backwards'\n\tand more ..."
+  m_WarningMessage: 
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
@@ -4639,6 +4628,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   weaponMuzzle: {fileID: 9143995220430227073}
+  minSpotDistance: 7
+  repositionDelay: 7
+  repositionMaxDistance: 10
+  playerPosMemoryTime: 15
   mask:
     serializedVersion: 2
     m_Bits: 17921
