@@ -470,7 +470,7 @@ namespace BNG {
             }
 
             // Damage if possible
-            Damageable d = hit.collider.GetComponent<Damageable>();
+            Damageable d = hit.collider.GetComponentInParent<Damageable>();
             if (d) {
                 d.DealDamage(Damage, hit.point, hit.normal, true, gameObject, hit.collider.gameObject);
 

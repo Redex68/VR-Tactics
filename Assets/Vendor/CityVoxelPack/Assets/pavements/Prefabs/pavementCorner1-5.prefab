@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 7543770922851041145}
   - component: {fileID: 5528337808500411564}
   - component: {fileID: 4221307943737110640}
-  m_Layer: 0
+  m_Layer: 14
   m_Name: pavementCorner1-5
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -120,7 +120,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 6399483726383512711}
-  m_Layer: 0
+  m_Layer: 14
   m_Name: pavementCorner1-5
   m_TagString: Untagged
   m_Icon: {fileID: 0}

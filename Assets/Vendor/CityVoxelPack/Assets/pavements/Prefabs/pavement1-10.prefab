@@ -9,7 +9,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 664630144483340838}
-  m_Layer: 0
+  m_Layer: 14
   m_Name: pavement1-10
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -44,7 +44,7 @@ GameObject:
   - component: {fileID: 5646381731123000077}
   - component: {fileID: 739557076900308466}
   - component: {fileID: 5995138731696268866}
-  m_Layer: 0
+  m_Layer: 14
   m_Name: pavement1-10
   m_TagString: Untagged
   m_Icon: {fileID: 0}
