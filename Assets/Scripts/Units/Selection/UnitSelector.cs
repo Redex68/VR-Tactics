@@ -55,6 +55,7 @@ public class UnitSelector : MonoBehaviour
         }
 
         units.Remove(unit);
+        selectedUnits.Remove(_unit);
     }
 
     public static void selectUnit(ControllableUnit unit, bool append)

@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -7,11 +8,26 @@ using UnityEngine.UI;
 public class UnitButton: Button {
     //Doesn't work for some reason
     [SerializeField] public GameObject unit;
+    [SerializeField] public string unitName;
+    [SerializeField] public int maxUnitCount;
+    
+    public int numUnitsLeft;
+    private TMPro.TMP_Text numUnitsLeftText;
+
+    protected override void Start()
+    {
+        base.Start();
+        numUnitsLeftText = transform.parent.Find("Counter/Number (TMP)")?.GetComponent<TMPro.TMP_Text>();
+        if(numUnitsLeftText) numUnitsLeftText.text = numUnitsLeft.ToString();
+        else Debug.LogError("No unit number counter found.");
+
+        UnitCreator.unitPlaced.AddListener(onUnitPlaced);
+    }
 
     public override void OnPointerDown(PointerEventData eventData)
     {
         base.OnPointerDown(eventData);
-        UnitCreator.placeUnit(unit);
+        if(interactable) UnitCreator.placeUnit(unit, unitName);
     }
 
     public override void OnPointerEnter(PointerEventData eventData)
@@ -24,5 +40,15 @@ public class UnitButton: Button {
     {
         base.OnPointerExit(eventData);
         UIManager.setMouseOverButton(false);
+    }
+
+    private void onUnitPlaced(string unitName)
+    {
+        if(unitName == this.unitName)
+        {
+            numUnitsLeft--;
+            if(numUnitsLeftText) numUnitsLeftText.text = numUnitsLeft.ToString();
+            if(numUnitsLeft == 0) this.interactable = false;
+        } 
     }
 }

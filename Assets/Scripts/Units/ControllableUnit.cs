@@ -9,9 +9,11 @@ public class ControllableUnit : MonoBehaviour
 {
     [SerializeField] GameObject weaponMuzzle;
     [SerializeField] float minSpotDistance = 7;
+    [SerializeField] float playerPosMemoryTime = 15;
     [SerializeField] float repositionDelay = 7;
     [SerializeField] float repositionMaxDistance = 7;
-    [SerializeField] float playerPosMemoryTime = 15;
+    [SerializeField] float optimalEngagementDistance = 25;
+    [SerializeField] float maxEngagementDistance = 50;
 
     public LayerMask mask;
     private NavMeshAgent agent;
@@ -56,16 +58,21 @@ public class ControllableUnit : MonoBehaviour
 
             if(!moving)
             {
-                if(playerInLOS) turnAndShoot();
-                else if(!movingToLastKnown) goToLastKnown();
+                Vector3 relativePlayerPos = VRPlayerController.transform.position - transform.position;
+                if(playerInLOS && relativePlayerPos.magnitude < maxEngagementDistance) turnAndShoot();
+                else goToLastKnown();
 
                 if(playerInLOS && Time.time - lastMoved > repositionDelay)
                 {
-                    Vector3 playerDir = VRPlayerController.transform.position - transform.position;
-                    playerDir.y = 0;
-                    playerDir.Normalize();
+                    relativePlayerPos.y = 0;
 
-                    Vector3 newPos = Util.randomPosition(transform.position, repositionMaxDistance) - playerDir * repositionMaxDistance * 0.25f;
+                    Vector3 newPos = Util.randomPosition(transform.position, repositionMaxDistance);
+                    //Bias the new position so that the optimal engagement distance is preserved.
+                    if(relativePlayerPos.magnitude < optimalEngagementDistance)
+                        newPos -=  relativePlayerPos.normalized * repositionMaxDistance * 0.25f;
+                    else
+                        newPos +=  relativePlayerPos.normalized * repositionMaxDistance * 0.25f;
+
                     if(newPos != Vector3.zero) setDestination(newPos);
                 }
                 
@@ -90,7 +97,7 @@ public class ControllableUnit : MonoBehaviour
         agent.SetDestination(destination);
         moving = true;
         movedThisFrame = true;
-    }
+    } 
 
     void OnDestroy()
     {
@@ -137,9 +144,9 @@ public class ControllableUnit : MonoBehaviour
             //If dot product is positive, the player is infront
             if(Vector3.Dot(fwd, playerRelativePos) > 0)
             {
-                playerSighted();
                 //Don't run away if the player showed up in front
-                lastMoved = Time.time;
+                if(playerInLOS == false && lastMoved > repositionDelay) lastMoved = Time.time;
+                playerSighted();
                 return;
             }
             else playerInLOS = false;

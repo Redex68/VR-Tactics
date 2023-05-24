@@ -5,6 +5,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
+using UnityEngine.Events;
 
 public class UnitCreator : MonoBehaviour
 {
@@ -16,16 +17,18 @@ public class UnitCreator : MonoBehaviour
     [SerializeField] Material placeableMaterial;
     [SerializeField] Material notPlaceableMaterial;
 
+    public static UnityEvent<string> unitPlaced = new UnityEvent<string>();
+
     private static UnitCreator Instance;
     private GameObject VRPlayer;
 
-    private GameObject unit;
     //Whether a unit is currently being placed or not
     public static bool placingUnit {get; private set;} = false;
     //The unit that's currently being placed by the RTS player
     private UnitPlacer beingPlaced;
     private struct UnitPlacer {
         public GameObject unit;
+        public string name;
         public List<Collider> colliders;
         public List<NavMeshObstacle> navmeshColliders;
         public List<MaterialHolder> materials;
@@ -68,11 +71,10 @@ public class UnitCreator : MonoBehaviour
         }
     }
 
-    public static void placeUnit(GameObject unit) {
-        Instance.unit = unit;
+    public static void placeUnit(GameObject unit, String unitName) {
         placingUnit = true;
 
-        Instance.setupUnit();
+        Instance.setupUnit(unit, unitName);
         Instance.moveUnit();
     }
 
@@ -99,7 +101,7 @@ public class UnitCreator : MonoBehaviour
         RaycastHit hitinfo;
         bool wasValid = validPos;
 
-        if(Physics.Raycast(ray, out hitinfo, 100.0f, placeRaycastTargets))
+        if(Physics.Raycast(ray, out hitinfo, 400.0f, placeRaycastTargets))
         {
             validPos = ((1 << hitinfo.transform.gameObject.layer) & placeableLayer.value) != 0
             && Vector3.Distance(hitinfo.point, VRPlayer.transform.position) > minDistanceFromVRPlayer;
@@ -141,8 +143,9 @@ public class UnitCreator : MonoBehaviour
 /// Sets the default parameters for the unit including disabling all colliders and making it invisible to the
 /// VR player.
 /// </summary>
-    private void setupUnit() {
+    private void setupUnit(GameObject unit, string unitName) {
         beingPlaced.unit = GameObject.Instantiate(unit);
+        beingPlaced.name = unitName;
         float cameraAngle = Mathf.Atan2(RTSPlayer.transform.forward.x, RTSPlayer.transform.forward.z) * Mathf.Rad2Deg;
         beingPlaced.unit.transform.eulerAngles = new Vector3(0, cameraAngle - 90f, 0);
 
@@ -187,6 +190,7 @@ public class UnitCreator : MonoBehaviour
 
         ControllableUnit script = beingPlaced.unit.GetComponent<ControllableUnit>();
         if(script != null) script.place();
+        unitPlaced.Invoke(beingPlaced.name);
     }
 
 /// <summary>
