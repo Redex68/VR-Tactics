@@ -9,7 +9,7 @@ public class UnitButtonSetter : MonoBehaviour
     [SerializeField] public int maxUnitCount;
 
     // Start is called before the first frame update
-    void Start()
+    void Awake()
     {
         UnitButton button = GetComponent<UnitButton>();
         button.unit = unit;
