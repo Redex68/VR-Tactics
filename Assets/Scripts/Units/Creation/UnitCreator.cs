@@ -67,6 +67,7 @@ public class UnitCreator : MonoBehaviour
             if(rotatingUnit) rotateUnit();
             else moveUnit();
             
+            if(Input.GetKey(KeyCode.Escape) || Input.GetMouseButtonDown(1)) placingUnitFail();
             if(!Input.GetMouseButton(0)) tryPlacingDown();
         }
     }
@@ -125,15 +126,11 @@ public class UnitCreator : MonoBehaviour
     private bool tryPlacingDown() {
         if(validPos) {
             //Put down the unit
-            placingUnit = false;
-            rotatingUnit = false;
             placeDownUnit();
         }
         else {
             //Unit is in an invalid position, destroy it.
-            placingUnit = false;
-            rotatingUnit = false;
-            Destroy(beingPlaced.unit);
+            placingUnitFail();
         }
 
         return validPos;
@@ -183,6 +180,8 @@ public class UnitCreator : MonoBehaviour
 /// the object's colliders).
 /// </summary>
     private void placeDownUnit() {
+        placingUnit = false;
+        rotatingUnit = false;
         beingPlaced.unit.layer = 0;
         foreach (Collider collider in beingPlaced.colliders) collider.enabled = true;
         foreach (NavMeshObstacle obstacle in beingPlaced.navmeshColliders) obstacle.enabled = true;
@@ -204,5 +203,12 @@ public class UnitCreator : MonoBehaviour
         }
 
         if(Input.GetKeyUp(rotateKey)) rotatingUnit = false;
+    }
+
+    private void placingUnitFail()
+    {
+        placingUnit = false;
+        rotatingUnit = false;
+        Destroy(beingPlaced.unit);
     }
 }
