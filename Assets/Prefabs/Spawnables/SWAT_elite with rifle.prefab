@@ -4628,13 +4628,17 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   weaponMuzzle: {fileID: 9143995220430227073}
+  placeableUnit: 1
+  head: {fileID: 5831705709071494952}
   minSpotDistance: 7
+  playerPosMemoryTime: 15
   repositionDelay: 7
   repositionMaxDistance: 10
-  playerPosMemoryTime: 15
+  optimalEngagementDistance: 25
+  maxEngagementDistance: 50
   mask:
     serializedVersion: 2
-    m_Bits: 17921
+    m_Bits: 16897
 --- !u!114 &8453735843781627999
 MonoBehaviour:
   m_ObjectHideFlags: 0

@@ -8,6 +8,8 @@ using BNG;
 public class ControllableUnit : MonoBehaviour
 {
     [SerializeField] GameObject weaponMuzzle;
+    [SerializeField] bool placeableUnit = true;
+    [SerializeField] Transform head;
     [SerializeField] float minSpotDistance = 7;
     [SerializeField] float playerPosMemoryTime = 15;
     [SerializeField] float repositionDelay = 7;
@@ -36,7 +38,7 @@ public class ControllableUnit : MonoBehaviour
     void Start()
     {
         agent = gameObject.GetComponent<NavMeshAgent>();
-        agent.enabled = false;
+        if(placeableUnit) agent.enabled = false;
         weaponScript = weaponMuzzle.GetComponentInParent<RaycastWeapon>();
         VRPlayerController = GameObject.Find("VR Player/PlayerController").transform;
         playerLayer = LayerMask.NameToLayer("Player");
@@ -132,12 +134,17 @@ public class ControllableUnit : MonoBehaviour
 
     private void checkIfPlayerInLOS()
     {
-        Vector3 playerRelativePos = VRPlayerController.position - weaponMuzzle.transform.position;
-        Ray ray = new Ray(weaponMuzzle.transform.position, playerRelativePos);
+        Vector3 forward = head.forward;
+        forward.y = 0;
+        forward = forward.normalized * 0.5f;
+        Vector3 offsetHead = head.position + forward;
+        
+        Vector3 playerRelativePos = VRPlayerController.position - offsetHead;
+        Ray ray = new Ray(offsetHead, playerRelativePos);
         RaycastHit hit;
-        if(Physics.Raycast(ray, out hit, 100, mask) && hit.transform.gameObject.layer == playerLayer)
+        if(Physics.Raycast(ray, out hit, 500.0f, mask) && hit.transform.gameObject.layer == playerLayer)
         {
-            Vector3 fwd = weaponMuzzle.transform.forward;
+            Vector3 fwd = head.forward;
             playerRelativePos.y = 0;
             fwd.y = 0;
 
@@ -146,26 +153,28 @@ public class ControllableUnit : MonoBehaviour
             {
                 //Don't run away if the player showed up in front
                 if(playerInLOS == false && lastMoved > repositionDelay) lastMoved = Time.time;
-                playerSighted();
-                return;
+                playerInLOS = true;
+                playerPositionFound();
+                //return;
             }
             else playerInLOS = false;
         }
         else playerInLOS = false;
 
+        Debug.DrawLine(offsetHead, hit.point, Color.red);
+
         //If the player is close to the unit
         if(playerRelativePos.magnitude < minSpotDistance) 
         {
-            playerSighted();
+            playerPositionFound();
             return;
         }
 
         if(Time.time - lastPlayerSighting > playerPosMemoryTime) lastKnownPlayerPos = Vector3.zero;
     }
     
-    private void playerSighted()
+    private void playerPositionFound()
     {
-        playerInLOS = true;
         lastPlayerSighting = Time.time;
         lastKnownPlayerPos = VRPlayerController.position;
     }
