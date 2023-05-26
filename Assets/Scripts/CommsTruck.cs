@@ -27,6 +27,7 @@ public class CommsTruck : MonoBehaviour
 
     public void OnDestruction()
     {
+        EventManager.onGameOver.Invoke(EventManager.Victor.VRPlayerWin);
         Instantiate(explosion, transform.position, Quaternion.identity);
     }
 }

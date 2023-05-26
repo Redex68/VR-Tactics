@@ -20,20 +20,24 @@ public class RTSPlayerControler : MonoBehaviour
     [Tooltip("An arbitrary number that represents the maximum distance the RTS player can zoom in by.")]
     [SerializeField] float minHeight;
     [SerializeField] CustomBounds cameraBounds;
+    [SerializeField] GameObject gameOverScreen;
+    [SerializeField] GameObject victoryScreen;
     private float defaultLocalZ;
     private Renderer[] playerRenderers;
     private Camera RTSCamera;
     private RectTransform markerTransform;
     private float zoom;
     private float desiredY;
+
     // Start is called before the first frame update
     void Start()
     {
         playerRenderers = GameObject.Find("VR Player/BodyIK").GetComponentsInChildren<Renderer>();
         RTSCamera = GetComponentInChildren<Camera>();
-        markerTransform = GameObject.Find("EnemyMarker").GetComponent<RectTransform>();
+        markerTransform = GameObject.Find("RTS Player Canvas/EnemyMarker").GetComponent<RectTransform>();
         defaultLocalZ = transform.localPosition.z;
         desiredY = transform.position.y;
+        EventManager.onGameOver.AddListener(onGameOver);
         zoom = calculateZoom();
     }
 
@@ -44,6 +48,11 @@ public class RTSPlayerControler : MonoBehaviour
         float forwardMovement = Input.GetAxisRaw("Vertical");
         float sideMovement = Input.GetAxisRaw("Horizontal");
 
+        //For testing
+        //if(Input.GetMouseButton(0)) 
+        //{
+        //    GameObject.Find("TestGun").GetComponent<BNG.RaycastWeapon>().Shoot();
+        //}
 
         Vector3 posNew = transform.position;
         float coef = (Input.GetKey(KeyCode.LeftShift) == true ? 50.0f : 25.0f) * zoom * Time.deltaTime;
@@ -112,5 +121,21 @@ public class RTSPlayerControler : MonoBehaviour
         float height = hit.point.y + 5f;
 
         if(height > pos.y) pos.y = height;
+    }
+
+    void onGameOver(EventManager.Victor victor)
+    {
+        GameObject.Find("RTS Player Canvas/Unit buttons")?.SetActive(false);
+        switch(victor)
+        {
+            case EventManager.Victor.RTSPlayerWin:
+            {
+                victoryScreen.SetActive(true);
+            } break;
+            case EventManager.Victor.VRPlayerWin:
+            {
+                gameOverScreen.SetActive(true);
+            } break;
+        }
     }
 }

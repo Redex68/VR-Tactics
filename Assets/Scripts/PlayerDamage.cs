@@ -1,7 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
 [RequireComponent(typeof(BNG.Damageable))]
@@ -19,7 +18,7 @@ public class PlayerDamage : MonoBehaviour
 
     public void PlayerDied()
     {
-        SceneManager.LoadSceneAsync("Menu");
+        EventManager.onGameOver.Invoke(EventManager.Victor.RTSPlayerWin);
     }
 
     public void PlayerDamaged(float damage)
