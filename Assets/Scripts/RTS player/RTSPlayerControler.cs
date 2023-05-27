@@ -22,6 +22,7 @@ public class RTSPlayerControler : MonoBehaviour
     [SerializeField] CustomBounds cameraBounds;
     [SerializeField] GameObject gameOverScreen;
     [SerializeField] GameObject victoryScreen;
+    [SerializeField] GameObject mainMenu;
     private float defaultLocalZ;
     private Renderer[] playerRenderers;
     private Camera RTSCamera;
@@ -44,6 +45,11 @@ public class RTSPlayerControler : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        //Open main menu
+        if(Input.GetKeyDown(KeyCode.Escape) && !UnitCreator.placingUnit)
+            mainMenu.SetActive(!mainMenu.activeSelf);
+        if(mainMenu.activeSelf) return;
+
         //Move camera
         float forwardMovement = Input.GetAxisRaw("Vertical");
         float sideMovement = Input.GetAxisRaw("Horizontal");

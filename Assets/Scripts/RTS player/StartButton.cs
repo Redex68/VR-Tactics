@@ -13,4 +13,9 @@ public class StartButton : MonoBehaviour
         button.GetComponent<UnityEngine.UI.Button>().interactable = false;
         button.GetComponentInChildren<TMPro.TMP_Text>().text = "Loading...";
     }
+
+    public void exit()
+    {
+        Application.Quit();
+    }
 }
