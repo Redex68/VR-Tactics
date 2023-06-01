@@ -32,7 +32,20 @@ public class UnitCreator : MonoBehaviour
         public List<Collider> colliders;
         public List<NavMeshObstacle> navmeshColliders;
         public List<MaterialHolder> materials;
+        public List<LayerHolder> layers;
     };
+
+    private struct LayerHolder {
+        public Transform transform;
+        public int oldLayer;
+
+        public LayerHolder(Transform transform, int layer)
+        {
+            this.transform = transform;
+            this.oldLayer = layer;
+        }
+    };
+
     private struct MaterialHolder {
         public Renderer renderer;
         public Material[] oldMaterials;
@@ -46,7 +59,7 @@ public class UnitCreator : MonoBehaviour
 
     private bool rotatingUnit = false;
     private Vector2 rotationCenter;
-    private bool validPos = true;
+    private bool validPos;
 
     void Awake() {
         if(Instance != null && Instance != this) Destroy(this);
@@ -57,6 +70,7 @@ public class UnitCreator : MonoBehaviour
         beingPlaced.colliders = new List<Collider>();
         beingPlaced.navmeshColliders = new List<NavMeshObstacle>();
         beingPlaced.materials = new List<MaterialHolder>();
+        beingPlaced.layers = new List<LayerHolder>();
         VRPlayer = GameObject.Find("VR Player/PlayerController");
     }
 
@@ -151,6 +165,8 @@ public class UnitCreator : MonoBehaviour
         beingPlaced.navmeshColliders.Clear();
         Collider[] colliders = beingPlaced.unit.GetComponentsInChildren<Collider>();
         NavMeshObstacle[] navmeshColliders = beingPlaced.unit.GetComponentsInChildren<NavMeshObstacle>();
+        Transform[] transforms = beingPlaced.unit.GetComponentsInChildren<Transform>();
+        
         foreach(Collider collider in colliders)
             if(collider.enabled) {
                 collider.enabled = false;
@@ -161,6 +177,11 @@ public class UnitCreator : MonoBehaviour
                 obstacle.enabled = false;
                 beingPlaced.navmeshColliders.Add(obstacle);
             }
+        foreach(Transform trans in transforms)
+        {
+            beingPlaced.layers.Add(new LayerHolder(trans, trans.gameObject.layer));
+            trans.gameObject.layer = 12;
+        }
 
         beingPlaced.materials.Clear();
         Renderer[] renderers = beingPlaced.unit.GetComponentsInChildren<Renderer>();
@@ -171,8 +192,10 @@ public class UnitCreator : MonoBehaviour
             newMaterials[0] = placeableMaterial;
             renderer.materials = newMaterials;
         }
-
-        beingPlaced.unit.layer = 12;
+        
+        validPos = false;
+        foreach(MaterialHolder holder in beingPlaced.materials)
+            holder.renderer.material = validPos ? placeableMaterial : notPlaceableMaterial;
     }
 
 /// <summary>
@@ -186,6 +209,7 @@ public class UnitCreator : MonoBehaviour
         foreach (Collider collider in beingPlaced.colliders) collider.enabled = true;
         foreach (NavMeshObstacle obstacle in beingPlaced.navmeshColliders) obstacle.enabled = true;
         foreach (MaterialHolder holder in beingPlaced.materials) holder.renderer.materials = holder.oldMaterials;
+        foreach (LayerHolder holder in beingPlaced.layers) holder.transform.gameObject.layer = holder.oldLayer;
 
         ControllableUnit script = beingPlaced.unit.GetComponent<ControllableUnit>();
         if(script != null) script.place();
