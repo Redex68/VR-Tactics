@@ -163,6 +163,7 @@ public class UnitCreator : MonoBehaviour
         //Disable all colliders and save them
         beingPlaced.colliders.Clear();
         beingPlaced.navmeshColliders.Clear();
+        beingPlaced.layers.Clear();
         Collider[] colliders = beingPlaced.unit.GetComponentsInChildren<Collider>();
         NavMeshObstacle[] navmeshColliders = beingPlaced.unit.GetComponentsInChildren<NavMeshObstacle>();
         Transform[] transforms = beingPlaced.unit.GetComponentsInChildren<Transform>();
