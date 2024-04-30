@@ -222,6 +222,7 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls: []
   unit: {fileID: 0}
+  unitTemplate: {fileID: 0}
   unitName: 
   maxUnitCount: 0
   numUnitsLeft: 0
@@ -238,6 +239,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   unit: {fileID: 7859761559143847411, guid: cea42191c9386d948814b2c8d6fef6ec, type: 3}
+  unitTemplate: {fileID: 0}
   unitName: Roadblock
   maxUnitCount: 30
 --- !u!222 &3781866177070817312

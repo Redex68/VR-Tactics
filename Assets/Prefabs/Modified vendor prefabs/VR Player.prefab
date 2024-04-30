@@ -31093,6 +31093,8 @@ GameObject:
   - component: {fileID: 7679139508182531833}
   - component: {fileID: 7679139508182531828}
   - component: {fileID: 1866203163916191798}
+  - component: {fileID: -4237018128009362532}
+  - component: {fileID: -5005973277199238418}
   m_Layer: 0
   m_Name: VR Player
   m_TagString: Untagged
@@ -31259,6 +31261,40 @@ MonoBehaviour:
   HMDIsActive: 0
   LeftControllerPosition: {x: -0.2, y: -0.2, z: 0.5}
   RightControllerPosition: {x: 0.2, y: -0.2, z: 0.5}
+--- !u!114 &-4237018128009362532
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4385016929406754431}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 158639473, guid: e725a070cec140c4caffb81624c8c787, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  SyncScale: 0
+  SyncParent: 0
+  _autoAOIOverride: 1
+  DisableSharedModeInterpolation: 0
+--- !u!114 &-5005973277199238418
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4385016929406754431}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: -1552182283, guid: e725a070cec140c4caffb81624c8c787, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  SortKey: 3485432085
+  ObjectInterest: 1
+  Flags: 1
+  NestedObjects: []
+  NetworkedBehaviours:
+  - {fileID: -4237018128009362532}
 --- !u!1 &4385016929500921631
 GameObject:
   m_ObjectHideFlags: 0

@@ -46,7 +46,7 @@ public class RTSPlayerControler : MonoBehaviour
     void Update()
     {
         //Open main menu
-        if(Input.GetKeyDown(KeyCode.Escape) && !UnitCreator.placingUnit)
+        if(Input.GetKeyDown(KeyCode.Escape) && !UnitPlacer.placingUnit)
             mainMenu.SetActive(!mainMenu.activeSelf);
         if(mainMenu.activeSelf) return;
 

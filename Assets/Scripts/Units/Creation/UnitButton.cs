@@ -1,3 +1,4 @@
+using Fusion;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -7,7 +8,8 @@ using UnityEngine.UI;
 
 public class UnitButton: Button {
     //Doesn't work for some reason
-    [SerializeField] public GameObject unit;
+    [SerializeField] public NetworkPrefabRef unit;
+    [SerializeField] public GameObject unitTemplate;
     [SerializeField] public string unitName;
     [SerializeField] public int maxUnitCount;
     
@@ -21,13 +23,13 @@ public class UnitButton: Button {
         if(numUnitsLeftText) numUnitsLeftText.text = numUnitsLeft.ToString();
         else Debug.LogError("No unit number counter found.");
 
-        UnitCreator.unitPlaced.AddListener(onUnitPlaced);
+        UnitCreator.unitCreated.AddListener(onUnitPlaced);
     }
 
     public override void OnPointerDown(PointerEventData eventData)
     {
         base.OnPointerDown(eventData);
-        if(interactable) UnitCreator.placeUnit(unit, unitName);
+        if(interactable) UnitPlacer.placeUnit(unit, unitTemplate, unitName);
     }
 
     public override void OnPointerEnter(PointerEventData eventData)

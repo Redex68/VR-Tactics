@@ -24,6 +24,6 @@ public class UIManager : MonoBehaviour
 
     public static bool canSelectArea()
     {
-        return !mouseOverButton && !UnitCreator.placingUnit;
+        return !mouseOverButton && !UnitPlacer.placingUnit;
     }
 }

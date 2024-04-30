@@ -15,6 +15,7 @@ GameObject:
   - component: {fileID: 1133014600662519557}
   - component: {fileID: 1133014600662519555}
   - component: {fileID: 1133014600662519554}
+  - component: {fileID: 53146274}
   m_Layer: 0
   m_Name: RTSPlayer
   m_TagString: Untagged
@@ -53,10 +54,13 @@ MonoBehaviour:
   maxHeight: 350
   minHeight: 280
   cameraBounds:
-    xMin: 0
-    xMax: 450
-    zMin: -600
-    zMax: -210
+    xMin: -100
+    xMax: 100
+    zMin: -100
+    zMax: 100
+  gameOverScreen: {fileID: 0}
+  victoryScreen: {fileID: 0}
+  mainMenu: {fileID: 0}
 --- !u!114 &1133014600662519807
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -136,6 +140,25 @@ MonoBehaviour:
   moveRaycastTargets:
     serializedVersion: 2
     m_Bits: 16384
+--- !u!114 &53146274
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1133014600662519802}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: -1552182283, guid: e725a070cec140c4caffb81624c8c787, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  SortKey: 3176281816
+  ObjectInterest: 1
+  Flags: 262145
+  NestedObjects: []
+  NetworkedBehaviours:
+  - {fileID: 1133014600662519807}
+  - {fileID: 1133014600662519554}
 --- !u!1 &1133014600979189488
 GameObject:
   m_ObjectHideFlags: 0
