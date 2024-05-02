@@ -24,7 +24,7 @@ public class LocomotionSimpleAgent : NetworkBehaviour {
     
     override public void FixedUpdateNetwork()
     {
-        if (Spawner.playerType == Spawner.PlayerType.VR)
+        if (Spawner.playerType == Spawner.PlayerType.VR && Runner.IsForward)
         {
             velocity = transform.InverseTransformDirection(agent.velocity);
 
