@@ -11,12 +11,11 @@ using UnityEngine.InputSystem;
 
 public class Spawner : MonoBehaviour, INetworkRunnerCallbacks
 {
-    public enum PlayerType { RTS, VR };
-    public static PlayerType playerType = PlayerType.VR;
-
+    [SerializeField] private PlayerTypeVariable playerType;
     [SerializeField] private NetworkPrefabRef _vrPlayerPrefab;
     [SerializeField] private NetworkPrefabRef _unitManagerPrefab;
     [SerializeField] private GameObject _rtsPlayerPrefab;
+    [SerializeField] private GameEvent onPlayerLoaded;
     private NetworkRunner _runner;
     private MyInputActions _playerActionMap;
     private Dictionary<PlayerRef, NetworkObject> _spawnedCharacters = new();
@@ -70,22 +69,23 @@ public class Spawner : MonoBehaviour, INetworkRunnerCallbacks
 
         if (mode == GameMode.Host)
         {
-            playerType = PlayerType.VR;
+            playerType.value = PlayerType.VR;
         }
         else
         {
-            playerType = PlayerType.RTS;
-            StartCoroutine(Wait());
+            playerType.value = PlayerType.RTS;
+            StartCoroutine(DelayedRTSSpawn());
         }
     }
 
-    IEnumerator Wait()
+    IEnumerator DelayedRTSSpawn()
     {
         yield return new WaitForSeconds(2);
 
         GameObject.Find("VR Player Networked(Clone)").name = "VR Player";
-        GameObject.Find("UnitManager(Clone)").name = "UnitManager";
+        GameObject.Find("NetworkedManagers(Clone)").name = "NetworkedManagers";
         GameObject player = Instantiate(_rtsPlayerPrefab, new Vector3(-20, 20, -30), Quaternion.identity);
+        onPlayerLoaded.Raise(this, null);
     }
 
     private void OnGUI()
@@ -137,9 +137,10 @@ public class Spawner : MonoBehaviour, INetworkRunnerCallbacks
             networkPlayerObject.name = "VR Player";
 
             var unitCreatorObject = runner.Spawn(_unitManagerPrefab);
-            unitCreatorObject.name = "UnitManager";
+            unitCreatorObject.name = "NetworkedManagers";
 
             _spawnedCharacters.Add(player, networkPlayerObject);
+            onPlayerLoaded.Raise(this, null);
         }
     }
 

@@ -10,12 +10,11 @@ GameObject:
   m_Component:
   - component: {fileID: 1133014600662519805}
   - component: {fileID: 1133014600662519804}
-  - component: {fileID: 1133014600662519807}
   - component: {fileID: 1133014600662519552}
   - component: {fileID: 1133014600662519557}
   - component: {fileID: 1133014600662519555}
-  - component: {fileID: 1133014600662519554}
-  - component: {fileID: 53146274}
+  - component: {fileID: 1040697911}
+  - component: {fileID: 2458027964389638919}
   m_Layer: 0
   m_Name: RTSPlayer
   m_TagString: Untagged
@@ -61,30 +60,7 @@ MonoBehaviour:
   gameOverScreen: {fileID: 0}
   victoryScreen: {fileID: 0}
   mainMenu: {fileID: 0}
---- !u!114 &1133014600662519807
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1133014600662519802}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a23c13de7eed3ce4eaf6529f9bb5d6be, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  RTSPlayer: {fileID: 1133014600979189490}
-  rotateKey: 304
-  placeRaycastTargets:
-    serializedVersion: 2
-    m_Bits: 18177
-  placeableLayer:
-    serializedVersion: 2
-    m_Bits: 16384
-  minDistanceFromVRPlayer: 50
-  placeableMaterial: {fileID: 2100000, guid: baf8d45ae039abe4b9d07b685cea1404, type: 2}
-  notPlaceableMaterial: {fileID: 2100000, guid: 51bdd20a837b7fc499e6f540db60faba,
-    type: 2}
+  gameEnd: {fileID: 11400000, guid: fc3a4a1e0dc188d45acc6d699beb3944, type: 2}
 --- !u!114 &1133014600662519552
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -125,7 +101,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   selectArea: {fileID: 0}
---- !u!114 &1133014600662519554
+--- !u!114 &1040697911
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -134,31 +110,30 @@ MonoBehaviour:
   m_GameObject: {fileID: 1133014600662519802}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: cb27c8cb9dd8bd54ea7e71b57f15448d, type: 3}
+  m_Script: {fileID: 11500000, guid: cce5f54ce3b2d4d4492d2ebb0cbec676, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  moveRaycastTargets:
+  RTSPlayer: {fileID: 1133014600979189490}
+  rotateKey: 304
+  placeRaycastTargets:
+    serializedVersion: 2
+    m_Bits: 22289
+  placeableLayer:
     serializedVersion: 2
     m_Bits: 16384
---- !u!114 &53146274
-MonoBehaviour:
+  minDistanceFromVRPlayer: 50
+  placeableMaterial: {fileID: 2100000, guid: baf8d45ae039abe4b9d07b685cea1404, type: 2}
+  notPlaceableMaterial: {fileID: 2100000, guid: 51bdd20a837b7fc499e6f540db60faba,
+    type: 2}
+  playerType: {fileID: 11400000, guid: 54e349ef13836c346bbba52f67b71934, type: 2}
+--- !u!81 &2458027964389638919
+AudioListener:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1133014600662519802}
   m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: -1552182283, guid: e725a070cec140c4caffb81624c8c787, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  SortKey: 3176281816
-  ObjectInterest: 1
-  Flags: 262145
-  NestedObjects: []
-  NetworkedBehaviours:
-  - {fileID: 1133014600662519807}
-  - {fileID: 1133014600662519554}
 --- !u!1 &1133014600979189488
 GameObject:
   m_ObjectHideFlags: 0

@@ -9,9 +9,8 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 91c767e772ffb194da999c96982b56c6, type: 3}
+  m_Script: {fileID: 11500000, guid: b4a094854d60e1a4ab1f56d92f31da36, type: 3}
   m_Name: PlayerHealth
   m_EditorClassIdentifier: 
-  defaultValue: 0
-  useDefault: 0
-  value: 0
+  defaultValue: 250
+  useDefault: 1

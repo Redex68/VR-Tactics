@@ -1,23 +1,33 @@
-using System.Collections;
-using System.Collections.Generic;
+using Fusion;
 using UnityEngine;
-using UnityEngine.Events;
 using UnityEngine.SceneManagement;
 
-public class EventManager : MonoBehaviour
+public class EventManager : NetworkBehaviour
 {
-    public enum Victor { RTSPlayerWin, VRPlayerWin }
-    public static UnityEvent<Victor> onGameOver = new UnityEvent<Victor>();
+    [SerializeField] GameEvent gameEnd;
+    [SerializeField] PlayerTypeVariable playerType;
 
-    // Start is called before the first frame update
-    void Start()
+    override public void Spawned()
     {
-        onGameOver.AddListener(onGameEnd);
+        gameEnd.OnEvent += onGameEnd;
     }
 
-    void onGameEnd(Victor victor)
+    private void OnDisable()
+    {
+        gameEnd.OnEvent -= onGameEnd;
+    }
+
+    //TODO: Make networked
+    void onGameEnd(Component sender, object victor)
     {
         Invoke("loadScene", 5.0f);
+        if(playerType.value == PlayerType.VR) RpcNetworkedEventCall((Victor)victor);
+    }
+
+    [Rpc(RpcSources.StateAuthority, RpcTargets.Proxies, HostMode = RpcHostMode.SourceIsHostPlayer)]
+    private void RpcNetworkedEventCall(Victor victor)
+    {
+        gameEnd.Raise(null, victor);
     }
 
     void loadScene()

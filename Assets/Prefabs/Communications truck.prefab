@@ -333,6 +333,7 @@ MonoBehaviour:
   largeFire: {fileID: 2799749139911597733}
   explosion: {fileID: 4290153768930161703, guid: 2106c1e9e571bd9488e0256bc379d3dd,
     type: 3}
+  gameEnd: {fileID: 11400000, guid: fc3a4a1e0dc188d45acc6d699beb3944, type: 2}
 --- !u!114 &4820865813734705938
 MonoBehaviour:
   m_ObjectHideFlags: 0

@@ -7,11 +7,11 @@ using UnityEngine;
 public class UnitController : NetworkBehaviour
 {
     [SerializeField] LayerMask moveRaycastTargets;
-    private Camera RTSPlayerCamera;
+    [SerializeField] PlayerTypeVariable playerType;
 
     void Update()
     {
-        if(Spawner.playerType == Spawner.PlayerType.RTS && Input.GetMouseButtonDown(1))
+        if(playerType.value == PlayerType.RTS && Input.GetMouseButtonDown(1))
         {
             Ray ray = UnitSelector.Instance.RTSPlayerCamera.ScreenPointToRay(Input.mousePosition);
             RaycastHit hit;

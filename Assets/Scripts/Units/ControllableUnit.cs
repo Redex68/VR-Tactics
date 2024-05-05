@@ -4,8 +4,10 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
 using BNG;
+using Fusion;
+using static Fusion.NetworkBehaviour;
 
-public class ControllableUnit : MonoBehaviour
+public class ControllableUnit : NetworkBehaviour
 {
     [SerializeField] GameObject weaponMuzzle;
     [SerializeField] bool placeableUnit = true;
@@ -16,10 +18,11 @@ public class ControllableUnit : MonoBehaviour
     [SerializeField] float repositionMaxDistance = 7;
     [SerializeField] float optimalEngagementDistance = 25;
     [SerializeField] float maxEngagementDistance = 50;
+    [SerializeField] private GameEvent onShoot;
+    [SerializeField] private PlayerTypeVariable playerType;
 
     public LayerMask mask;
     private NavMeshAgent agent;
-    private RaycastWeapon weaponScript;
     private Transform VRPlayerController;
     private static int playerLayer;
     private float time = 0;
@@ -28,27 +31,32 @@ public class ControllableUnit : MonoBehaviour
     private float lastMoved = 0;
     private bool moving = false;
 
+    private RaycastWeapon weaponScript;
     private Vector3 lastKnownPlayerPos = Vector3.zero;
     private bool playerInLOS = false;
     private float lastPlayerSighting = 0;
     private bool movingToLastKnown = false;
     private bool movedThisFrame = false;
 
+    [Networked] private bool _shootToggle { get; set; } = false;
+    private ChangeDetector _changeDetector;
+
     // Start is called before the first frame update
-    void Start()
+    override public void Spawned()
     {
         agent = gameObject.GetComponent<NavMeshAgent>();
         if(placeableUnit) agent.enabled = false;
-        weaponScript = weaponMuzzle.GetComponentInParent<RaycastWeapon>();
         VRPlayerController = GameObject.Find("VR Player/PlayerController").transform;
         playerLayer = LayerMask.NameToLayer("Player");
+        weaponScript = weaponMuzzle.GetComponentInParent<RaycastWeapon>();
+        _changeDetector = GetChangeDetector(ChangeDetector.Source.SimulationState);
 
         UnitSelector.addUnit(this);
     }
 
-    void Update()
+    override public void Render()
     {
-        if(!dead && agent.isOnNavMesh)
+        if(playerType.value == PlayerType.VR && !dead && agent.isOnNavMesh)
         {
             checkIfPlayerInLOS();
             if(!movedThisFrame && moving && agent.isOnNavMesh && agent.remainingDistance < agent.stoppingDistance && !dead)
@@ -86,6 +94,16 @@ public class ControllableUnit : MonoBehaviour
             }
         }
         movedThisFrame = false;
+
+        foreach(var change in _changeDetector.DetectChanges(this))
+        {
+            switch(change)
+            {
+                case nameof(_shootToggle):
+                    weaponScript.Shoot();
+                    break;
+            }
+        }
     }
 
     public void place()
@@ -119,7 +137,7 @@ public class ControllableUnit : MonoBehaviour
         if(Time.time - time > 1 && angle < 2)
         {
             time = Time.time;
-            weaponScript.Shoot();
+            _shootToggle = !_shootToggle;
         }
     }
 

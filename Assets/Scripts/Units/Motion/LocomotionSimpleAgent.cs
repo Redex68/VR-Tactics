@@ -11,6 +11,7 @@ public class LocomotionSimpleAgent : NetworkBehaviour {
     Vector2 smoothDeltaPosition = Vector2.zero;
     Vector3 velocity = Vector2.zero;
     LookAt lookAt;
+    [SerializeField] private PlayerTypeVariable playerType;
 
     override public void Spawned ()
     {
@@ -24,7 +25,7 @@ public class LocomotionSimpleAgent : NetworkBehaviour {
     
     override public void FixedUpdateNetwork()
     {
-        if (Spawner.playerType == Spawner.PlayerType.VR && Runner.IsForward)
+        if (playerType.value == PlayerType.VR && Runner.IsForward)
         {
             velocity = transform.InverseTransformDirection(agent.velocity);
 

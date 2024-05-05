@@ -1,34 +1,23 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Events;
 
 [CreateAssetMenu(menuName = "Scriptable Object/GameEvent")]
 public class GameEvent : ScriptableObject
 {
-    public List<GameEventListener> listeners = new List<GameEventListener>();
+    public delegate void Notify(Component sender, object data);
+    public event Notify OnEvent;
 
+
+    //For legacy reasons (something would probably break without this)
     public void Raise(Component sender, object data)
     {
-        foreach (GameEventListener listener in listeners)
-            listener.OnEventRaised(sender, data);
+        OnEvent?.Invoke(sender, data);
     }
 
     public void SimpleRaise()
     {
-        foreach (GameEventListener listener in listeners)
-            listener.OnEventRaised(null, null);
-
-    }
-
-    public void RegisterListener(GameEventListener listener)
-    {
-        if (!listeners.Contains(listener))
-            listeners.Add(listener);
-    }
-
-    public void UnregisterListener(GameEventListener listener)
-    {
-        if (listeners.Contains(listener))
-            listeners.Remove(listener);
+        OnEvent?.Invoke(null, null);
     }
 }

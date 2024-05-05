@@ -1,34 +1,25 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.UI;
 
 [RequireComponent(typeof(BNG.Damageable))]
 public class PlayerDamage : MonoBehaviour
 {
-    [SerializeField] public Slider slider;
-    private TMPro.TMP_Text health;
+    [SerializeField] private FloatEventVariable playerHealth;
+    [SerializeField] private GameEvent gameEnd;
     private BNG.Damageable dmg;
 
     void Start() {
         dmg = GetComponent<BNG.Damageable>();
-        health = slider.transform.Find("Health").GetComponent<TMPro.TMP_Text>();
-        updateHealth();
+        playerHealth.value = dmg.Health;
     }
 
     public void PlayerDied()
     {
-        EventManager.onGameOver.Invoke(EventManager.Victor.RTSPlayerWin);
+        gameEnd.Raise(this, Victor.RTS);
     }
 
+    //Gets called by BNG.Damageable
     public void PlayerDamaged(float damage)
     {
-        updateHealth();
-    }
-
-    private void updateHealth()
-    {
-        slider.value = dmg.Health;
-        health.text = ((int)dmg.Health) + "/250";
+        playerHealth.value = dmg.Health;
     }
 }

@@ -3934,6 +3934,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 287c003d2af721f42bd42bde1b26c802, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  playerType: {fileID: 11400000, guid: 54e349ef13836c346bbba52f67b71934, type: 2}
 --- !u!114 &512151094
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4074,6 +4075,8 @@ MonoBehaviour:
   repositionMaxDistance: 10
   optimalEngagementDistance: 25
   maxEngagementDistance: 50
+  onShoot: {fileID: 11400000, guid: 8d0461cd0fca60847a8f4d95076f45c8, type: 2}
+  playerType: {fileID: 11400000, guid: 54e349ef13836c346bbba52f67b71934, type: 2}
   mask:
     serializedVersion: 2
     m_Bits: 16897
@@ -4097,6 +4100,7 @@ MonoBehaviour:
   - {fileID: -7737607072729823663}
   - {fileID: -5256206056175110684}
   - {fileID: 512151093}
+  - {fileID: 2205809999169920840}
 --- !u!114 &8453735843781627999
 MonoBehaviour:
   m_ObjectHideFlags: 0

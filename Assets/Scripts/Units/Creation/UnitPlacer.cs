@@ -14,6 +14,7 @@ public class UnitPlacer: MonoBehaviour
     [SerializeField] float minDistanceFromVRPlayer = 50.0f;
     [SerializeField] Material placeableMaterial;
     [SerializeField] Material notPlaceableMaterial;
+    [SerializeField] private PlayerTypeVariable playerType;
 
     private static UnitPlacer Instance;
     private GameObject VRPlayer;
@@ -79,7 +80,7 @@ public class UnitPlacer: MonoBehaviour
     void Update()
     {
         //Check if this is being run on the RTS player side
-        if (Spawner.playerType == Spawner.PlayerType.RTS)
+        if (playerType.value == PlayerType.RTS)
         {
             checkRotating();
 
@@ -208,7 +209,7 @@ public class UnitPlacer: MonoBehaviour
         {
             beingPlaced.materials.Add(new MaterialHolder(renderer, renderer.materials));
             Material[] newMaterials = new Material[1];
-            newMaterials[0] = placeableMaterial;
+            newMaterials[0] = notPlaceableMaterial;
             renderer.materials = newMaterials;
         }
 

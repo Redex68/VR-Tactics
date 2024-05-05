@@ -8,6 +8,7 @@ public class CommsTruck : MonoBehaviour
     [SerializeField] GameObject smallFire;
     [SerializeField] GameObject largeFire;
     [SerializeField] GameObject explosion;
+    [SerializeField] GameEvent gameEnd;
     private BNG.Damageable damageable;
     private float maxHp;
 
@@ -27,7 +28,7 @@ public class CommsTruck : MonoBehaviour
 
     public void OnDestruction()
     {
-        EventManager.onGameOver.Invoke(EventManager.Victor.VRPlayerWin);
+        gameEnd.Raise(this ,Victor.VR);
         Instantiate(explosion, transform.position, Quaternion.identity);
     }
 }

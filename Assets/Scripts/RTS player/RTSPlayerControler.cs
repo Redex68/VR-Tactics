@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System;
 using UnityEngine;
+using UnityEngine.InputSystem;
 
 public class RTSPlayerControler : MonoBehaviour
 {
@@ -23,6 +24,8 @@ public class RTSPlayerControler : MonoBehaviour
     [SerializeField] GameObject gameOverScreen;
     [SerializeField] GameObject victoryScreen;
     [SerializeField] GameObject mainMenu;
+    [SerializeField] GameEvent gameEnd;
+
     private float defaultLocalZ;
     private Renderer[] playerRenderers;
     private Camera RTSCamera;
@@ -33,13 +36,19 @@ public class RTSPlayerControler : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        gameEnd.OnEvent += (OnGameOver);
+
         playerRenderers = GameObject.Find("VR Player/BodyIK").GetComponentsInChildren<Renderer>();
         RTSCamera = GetComponentInChildren<Camera>();
         markerTransform = GameObject.Find("RTS Player Canvas/EnemyMarker").GetComponent<RectTransform>();
         defaultLocalZ = transform.localPosition.z;
         desiredY = transform.position.y;
-        EventManager.onGameOver.AddListener(onGameOver);
         zoom = calculateZoom();
+    }
+
+    private void OnDisable()
+    {
+        gameEnd.OnEvent -= (OnGameOver);
     }
 
     // Update is called once per frame
@@ -129,16 +138,16 @@ public class RTSPlayerControler : MonoBehaviour
         if(height > pos.y) pos.y = height;
     }
 
-    void onGameOver(EventManager.Victor victor)
+    void OnGameOver(Component sender, object victor)
     {
         GameObject.Find("RTS Player Canvas/Unit buttons")?.SetActive(false);
-        switch(victor)
+        switch((Victor)victor)
         {
-            case EventManager.Victor.RTSPlayerWin:
+            case Victor.RTS:
             {
                 victoryScreen.SetActive(true);
             } break;
-            case EventManager.Victor.VRPlayerWin:
+            case Victor.VR:
             {
                 gameOverScreen.SetActive(true);
             } break;
