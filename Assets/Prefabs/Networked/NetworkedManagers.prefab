@@ -13,6 +13,7 @@ GameObject:
   - component: {fileID: 2715874389027184824}
   - component: {fileID: 2715874389027184827}
   - component: {fileID: 8650186839400377216}
+  - component: {fileID: 7587462031384973305}
   m_Layer: 0
   m_Name: NetworkedManagers
   m_TagString: Untagged
@@ -83,6 +84,7 @@ MonoBehaviour:
   - {fileID: 2715874389027184825}
   - {fileID: 2715874389027184824}
   - {fileID: 8650186839400377216}
+  - {fileID: 7587462031384973305}
 --- !u!114 &8650186839400377216
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -97,3 +99,16 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   gameEnd: {fileID: 11400000, guid: fc3a4a1e0dc188d45acc6d699beb3944, type: 2}
   playerType: {fileID: 11400000, guid: 54e349ef13836c346bbba52f67b71934, type: 2}
+--- !u!114 &7587462031384973305
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2715874389027184826}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 88d0936502877a941bec40f1a890804c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  onGameStart: {fileID: 11400000, guid: c771129c0cde80044b2388405718b8b6, type: 2}

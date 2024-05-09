@@ -20,4 +20,19 @@ public class GameEvent : ScriptableObject
     {
         OnEvent?.Invoke(null, null);
     }
+
+    public void SimpleRaise(int data)
+    {
+        OnEvent?.Invoke(null, data);
+    }
+
+    public void SimpleRaise(float data)
+    {
+        OnEvent?.Invoke(null, data);
+    }
+
+    public void SimpleRaise(string data)
+    {
+        OnEvent?.Invoke(null, data);
+    }
 }

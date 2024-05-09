@@ -1,0 +1,2 @@
+OnSessionStart    	  -> 	OnSessionStarted 	     -> OnGameStart
+(player clicked Host/Join)   (network connection established)   (RTS player clicked start)

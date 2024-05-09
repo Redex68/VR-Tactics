@@ -23,10 +23,10 @@ EditorBuildSettings:
   - enabled: 0
     path: Assets/Vendor/BNG Framework/Scenes/Quest Demo.unity
     guid: eac0312c32df12949a47d07747a9d1cd
-  - enabled: 0
+  - enabled: 1
     path: Assets/Scenes/Menu.unity
     guid: dc219362169e35e43a6ab36d5bf728b4
-  - enabled: 0
+  - enabled: 1
     path: Assets/Scenes/Main scene.unity
     guid: cfd089cc752e7274a8a214c24d47522b
   - enabled: 1
