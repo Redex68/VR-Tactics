@@ -870,7 +870,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 212077058}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 229.44, y: 203.996, z: 174.49}
+  m_LocalPosition: {x: 229.44, y: 205.37, z: 174.49}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -1552,6 +1552,7 @@ GameObject:
   - component: {fileID: 275355435}
   - component: {fileID: 275355434}
   - component: {fileID: 275355433}
+  - component: {fileID: 275355436}
   m_Layer: 0
   m_Name: VR Player EventSystem
   m_TagString: Untagged
@@ -1616,6 +1617,21 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 5
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &275355436
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 275355432}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: dd436915b2432c848aeb63094a170087, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  eventManagerType: 0
+  playerTypeSelected: {fileID: 11400000, guid: 08df328283d1adc4a8ed91b4c6d832de, type: 2}
+  playerType: {fileID: 11400000, guid: 54e349ef13836c346bbba52f67b71934, type: 2}
 --- !u!1 &297356555
 GameObject:
   m_ObjectHideFlags: 0
@@ -1627,6 +1643,7 @@ GameObject:
   - component: {fileID: 297356558}
   - component: {fileID: 297356557}
   - component: {fileID: 297356556}
+  - component: {fileID: 297356559}
   m_Layer: 0
   m_Name: RTS Player EventSystem
   m_TagString: Untagged
@@ -1706,6 +1723,21 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &297356559
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 297356555}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: dd436915b2432c848aeb63094a170087, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  eventManagerType: 1
+  playerTypeSelected: {fileID: 11400000, guid: 08df328283d1adc4a8ed91b4c6d832de, type: 2}
+  playerType: {fileID: 11400000, guid: 54e349ef13836c346bbba52f67b71934, type: 2}
 --- !u!1001 &316744340
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -7271,7 +7303,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1206980315}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 245.0093, y: 196.46957, z: 185.97607}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []

@@ -53,10 +53,10 @@ MonoBehaviour:
   maxHeight: 350
   minHeight: 280
   cameraBounds:
-    xMin: -100
-    xMax: 100
-    zMin: -100
-    zMax: 100
+    xMin: 15
+    xMax: 420
+    zMin: -600
+    zMax: -240
   gameOverScreen: {fileID: 0}
   victoryScreen: {fileID: 0}
   mainMenu: {fileID: 0}

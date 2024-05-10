@@ -87,11 +87,11 @@ public class MainMenuManager : MonoBehaviour
             MainMenu.SetActive(false);
             HostScreen.SetActive(false);
             JoinScreen.SetActive(false);
-        }
 
-        if(playerType.value == PlayerType.RTS)
-        {
-            StartScreen.SetActive(true);
+            if (playerType.value == PlayerType.RTS)
+            {
+                StartScreen.SetActive(true);
+            }
         }
     }
 }

@@ -18465,8 +18465,9 @@ GameObject:
   - component: {fileID: 8498893783144249618}
   - component: {fileID: 470062714268078032}
   - component: {fileID: 2730553273789807880}
-  - component: {fileID: 4614592033571554170}
   - component: {fileID: -3036184258117446554}
+  - component: {fileID: 4614592033571554170}
+  - component: {fileID: 5274703453323505600}
   m_Layer: 0
   m_Name: VR Player Networked
   m_TagString: Untagged
@@ -18657,6 +18658,22 @@ MonoBehaviour:
   - {fileID: 4284049504343280911}
   - {fileID: 6399281255726516851}
   - {fileID: 7145178361499588250}
+--- !u!114 &-3036184258117446554
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2574193964393994649}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 158639473, guid: e725a070cec140c4caffb81624c8c787, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  SyncScale: 0
+  SyncParent: 0
+  _autoAOIOverride: 1
+  DisableSharedModeInterpolation: 0
 --- !u!114 &4614592033571554170
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -18674,6 +18691,7 @@ MonoBehaviour:
   - {fileID: 8498893783144249631}
   - {fileID: 8498893783144249618}
   - {fileID: 470062714268078032}
+  - {fileID: 5274703453323505600}
   - {fileID: 8235880208394352448}
   - {fileID: 5956064236319566884}
   - {fileID: 3826478601633137395}
@@ -18715,22 +18733,18 @@ MonoBehaviour:
   - {fileID: 8118310663825329167}
   - {fileID: 8118310663825329160}
   - {fileID: 8118310663825329166}
---- !u!114 &-3036184258117446554
+--- !u!114 &5274703453323505600
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2574193964393994649}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
-  m_Script: {fileID: 158639473, guid: e725a070cec140c4caffb81624c8c787, type: 3}
+  m_Script: {fileID: 11500000, guid: 705ed683f96a63e418f4ce3b422ebda2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  SyncScale: 0
-  SyncParent: 0
-  _autoAOIOverride: 1
-  DisableSharedModeInterpolation: 0
 --- !u!1 &2574193964501203193
 GameObject:
   m_ObjectHideFlags: 0

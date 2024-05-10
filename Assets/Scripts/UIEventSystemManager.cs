@@ -9,11 +9,23 @@ public class UIEventSystemManager : MonoBehaviour
     [SerializeField] GameEvent playerTypeSelected;
     [SerializeField] PlayerTypeVariable playerType;
 
+    MultiplayerEventSystem EventSystem;
+    MonoBehaviour InputSystem;
+
     private enum EventManagerType { VREventManager, RTSEventManager };
     // Start is called before the first frame update
     void Start()
     {
         playerTypeSelected.OnEvent += OnPlayerTypeChanged;
+        EventSystem = transform.GetComponent<MultiplayerEventSystem>();
+        if(eventManagerType == EventManagerType.VREventManager)
+            InputSystem = transform.GetComponent<BNG.VRUISystem>();
+        else
+            InputSystem = transform.GetComponent<InputSystemUIInputModule>();
+
+        EventSystem.enabled = false;
+        InputSystem.enabled = false;
+        OnPlayerTypeChanged(null, null);
     }
 
     void OnDisable()
@@ -23,35 +35,31 @@ public class UIEventSystemManager : MonoBehaviour
 
     void OnPlayerTypeChanged(Component sender, object data)
     {
-        MultiplayerEventSystem EventSystem;
-        MonoBehaviour InputSystem;
-        switch(eventManagerType)
+        switch(playerType.value)
         {
-            case EventManagerType.VREventManager:
-                EventSystem = transform.GetComponent<MultiplayerEventSystem>();
-                if(playerType.value == PlayerType.RTS)
+            case PlayerType.VR:
+                if(eventManagerType == EventManagerType.VREventManager)
                 {
-                    InputSystem = transform.GetComponent<BNG.VRUISystem>();
+                    EventSystem.enabled = true;
+                    InputSystem.enabled = true;
+                }
+                else
+                {
                     EventSystem.enabled = false;
                     InputSystem.enabled = false;
                 }
-                //else
-                //{
-                //    EventSystem.playerRoot = GameObject.Find("RTSPlayer");
-                //}
                 break;
-            case EventManagerType.RTSEventManager:
-                EventSystem = transform.GetComponent<MultiplayerEventSystem>();
-                if(playerType.value == PlayerType.VR)
+            case PlayerType.RTS:
+                if (eventManagerType == EventManagerType.RTSEventManager)
                 {
-                    InputSystem = transform.GetComponent<InputSystemUIInputModule>();
+                    EventSystem.enabled = true;
+                    InputSystem.enabled = true;
+                }
+                else
+                {
                     EventSystem.enabled = false;
                     InputSystem.enabled = false;
                 }
-                //else
-                //{
-                //    EventSystem.playerRoot = GameObject.Find("VR Player");
-                //}
                 break;
         }
     }

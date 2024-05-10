@@ -20,6 +20,7 @@ public class Spawner : MonoBehaviour, INetworkRunnerCallbacks
     private GameObject NetworkRunnerObj;
     private NetworkRunner _runner;
     private MyInputActions _playerActionMap;
+    private List<PlayerRef> _players = new();
     private Dictionary<PlayerRef, NetworkObject> _spawnedCharacters = new();
 
     struct Actions
@@ -48,6 +49,7 @@ public class Spawner : MonoBehaviour, INetworkRunnerCallbacks
         _playerActionMap.UI.Enable();
 
         _onSessionStart.OnEvent += OnStartGame;
+        DontDestroyOnLoad(this);
     }
 
     void OnDisable()
@@ -126,22 +128,43 @@ public class Spawner : MonoBehaviour, INetworkRunnerCallbacks
 
         GameObject.Find("VR Player Networked(Clone)").name = "VR Player";
         GameObject.Find("NetworkedManagers(Clone)").name = "NetworkedManagers";
-        GameObject player = Instantiate(_rtsPlayerPrefab, new Vector3(351, 350, -224), Quaternion.Euler(44, 180, 0));
+        var spawnPoint = GameObject.Find("RTS Player Spawn Point");
+        var spawnPosition = spawnPoint.transform.position;
+        var spawnRotation = spawnPoint.transform.rotation;
+        GameObject player = Instantiate(_rtsPlayerPrefab, spawnPosition, spawnRotation);
         _onPlayerLoaded.Raise(this, null);
     }
 
     private void SpawnVRPlayer(NetworkRunner runner, PlayerRef player)
     {
+        Debug.Log("Spawning VR player");
         var spawnPoint = GameObject.Find("VR Player Spawn Point");
         var spawnPosition = spawnPoint.transform.position;
         var spawnRotation = spawnPoint.transform.rotation;
-        var networkPlayerObject = runner.Spawn(_vrPlayerPrefab, spawnPosition, spawnRotation, player);
+        NetworkObject networkPlayerObject;
+
+        if (player != default)
+        {
+            networkPlayerObject = runner.Spawn(_vrPlayerPrefab, Vector3.zero, Quaternion.identity, player);
+            networkPlayerObject.gameObject.GetComponentInChildren<BNG.PlayerTeleport>().TeleportPlayer(spawnPosition, spawnRotation);
+
+            _players.Add(player);
+            _spawnedCharacters.Add(player, networkPlayerObject);
+        }
+        //Case: VR player was spawned once already
+        else
+        {
+            _spawnedCharacters.Remove(player);
+            networkPlayerObject = runner.Spawn(_vrPlayerPrefab, Vector3.zero, Quaternion.identity, player);
+            networkPlayerObject.gameObject.GetComponentInChildren<BNG.PlayerTeleport>().TeleportPlayer(spawnPosition, spawnRotation);
+            _spawnedCharacters.Add(player, networkPlayerObject);
+        }
+
         networkPlayerObject.name = "VR Player";
 
         var unitCreatorObject = runner.Spawn(_networkedManagersPrefab);
         unitCreatorObject.name = "NetworkedManagers";
 
-        _spawnedCharacters.Add(player, networkPlayerObject);
         _onPlayerLoaded.Raise(this, null);
     }
 
@@ -178,7 +201,6 @@ public class Spawner : MonoBehaviour, INetworkRunnerCallbacks
     public void OnObjectExitAOI(NetworkRunner runner, NetworkObject obj, PlayerRef player) { }
     public void OnPlayerJoined(NetworkRunner runner, PlayerRef player)
     {
-        Debug.Log("Here");
         if (runner.IsServer && _spawnedCharacters.Count == 0)
             SpawnVRPlayer(runner, player);
     }
@@ -190,12 +212,23 @@ public class Spawner : MonoBehaviour, INetworkRunnerCallbacks
             runner.Despawn(networkObject);
             _spawnedCharacters.Remove(player);
         }
+        _players.Remove(player);
     }
 
     public void OnReliableDataProgress(NetworkRunner runner, PlayerRef player, ReliableKey key, float progress) { }
     public void OnReliableDataReceived(NetworkRunner runner, PlayerRef player, ReliableKey key, ArraySegment<byte> data) { }
-    public void OnSceneLoadDone(NetworkRunner runner) { Debug.Log("OnSceneLoadDone"); }
-    public void OnSceneLoadStart(NetworkRunner runner) { Debug.Log("OnSceneLoadStart"); }
+    public void OnSceneLoadDone(NetworkRunner runner)
+    {
+        Debug.Log($"Here {SceneManager.GetActiveScene().buildIndex}, {_playerType.value}");
+        if (runner.IsServer && _spawnedCharacters.Count != 0)
+            SpawnVRPlayer(runner, default);
+        else if(SceneManager.GetActiveScene().buildIndex == 1 && _playerType.value == PlayerType.RTS)
+        {
+            Debug.Log($"Here 2");
+            StartCoroutine(DelayedRTSSpawn());
+        }
+    }
+    public void OnSceneLoadStart(NetworkRunner runner) { }
     public void OnSessionListUpdated(NetworkRunner runner, List<SessionInfo> sessionList) { }
     public void OnShutdown(NetworkRunner runner, ShutdownReason shutdownReason) { }
     public void OnUserSimulationMessage(NetworkRunner runner, SimulationMessagePtr message) { }
