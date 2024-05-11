@@ -74,7 +74,6 @@ public class UnitPlacer: MonoBehaviour
         beingPlaced.navmeshColliders = new List<NavMeshObstacle>();
         beingPlaced.materials = new List<MaterialHolder>();
         beingPlaced.layers = new List<LayerHolder>();
-        VRPlayer = GameObject.Find("VR Player/PlayerController");
     }
 
     void Update()
@@ -127,11 +126,12 @@ public class UnitPlacer: MonoBehaviour
         Ray ray = RTSPlayer.ScreenPointToRay(Input.mousePosition);
         RaycastHit hitinfo;
         bool wasValid = validPos;
+        VRPlayer = GameObject.Find("VR Player/PlayerController");
 
         if (Physics.Raycast(ray, out hitinfo, 400.0f, placeRaycastTargets))
         {
             validPos = ((1 << hitinfo.transform.gameObject.layer) & placeableLayer.value) != 0
-            && Vector3.Distance(hitinfo.point, VRPlayer.transform.position) > minDistanceFromVRPlayer;
+            && (VRPlayer != null && Vector3.Distance(hitinfo.point, VRPlayer.transform.position) > minDistanceFromVRPlayer);
 
             beingPlaced.unitTemplate.transform.position = hitinfo.point;
         }

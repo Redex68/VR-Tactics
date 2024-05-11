@@ -38,7 +38,6 @@ public class RTSPlayerControler : MonoBehaviour
     {
         gameEnd.OnEvent += (OnGameOver);
 
-        playerRenderers = GameObject.Find("VR Player/BodyIK").GetComponentsInChildren<Renderer>();
         RTSCamera = GetComponentInChildren<Camera>();
         markerTransform = GameObject.Find("RTS Player Canvas/EnemyMarker").GetComponent<RectTransform>();
         defaultLocalZ = transform.localPosition.z;
@@ -55,7 +54,7 @@ public class RTSPlayerControler : MonoBehaviour
     void Update()
     {
         //Open main menu
-        if(Input.GetKeyDown(KeyCode.Escape) && !UnitPlacer.placingUnit)
+        if (Input.GetKeyDown(KeyCode.Escape) && !UnitPlacer.placingUnit)
             mainMenu.SetActive(!mainMenu.activeSelf);
         if(mainMenu.activeSelf) return;
 
@@ -104,13 +103,17 @@ public class RTSPlayerControler : MonoBehaviour
             transform.eulerAngles = angles;
         }
 
-        //Move the marker that denotes the player
-        Bounds bounds = Util.getBounds(playerRenderers);
-        Vector2 posOnScreen = Util.getMarkerPos(bounds, RTSCamera);
+        playerRenderers = GameObject.Find("VR Player/BodyIK")?.GetComponentsInChildren<Renderer>();
+        if (playerRenderers != null)
+        {
+            //Move the marker that denotes the player
+            Bounds bounds = Util.getBounds(playerRenderers);
+            Vector2 posOnScreen = Util.getMarkerPos(bounds, RTSCamera);
         
-        //Util.drawBounds(bounds);
+            //Util.drawBounds(bounds);
 
-        markerTransform.position = posOnScreen;
+            markerTransform.position = posOnScreen;
+        }
     }
     
     private float calculateZoom()

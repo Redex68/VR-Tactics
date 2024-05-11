@@ -7805,7 +7805,7 @@ GameObject:
   - component: {fileID: 5544841310503652075}
   - component: {fileID: 6023232432584071810}
   - component: {fileID: 6157438455401524568}
-  m_Layer: 2
+  m_Layer: 11
   m_Name: Ring
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -9850,7 +9850,7 @@ GameObject:
   - component: {fileID: 203055867164979666}
   - component: {fileID: 8818655057456492775}
   - component: {fileID: 2219954816681855079}
-  m_Layer: 2
+  m_Layer: 11
   m_Name: HolsterRight
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -10936,7 +10936,7 @@ GameObject:
   - component: {fileID: 3943280750356996905}
   - component: {fileID: 8445000250314609570}
   - component: {fileID: 3826478600886574431}
-  m_Layer: 2
+  m_Layer: 11
   m_Name: Image
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -12473,7 +12473,7 @@ GameObject:
   - component: {fileID: 8427803386466056712}
   - component: {fileID: 4126822092402986335}
   - component: {fileID: 3826478601582053139}
-  m_Layer: 2
+  m_Layer: 11
   m_Name: Image (1)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -17651,7 +17651,7 @@ GameObject:
   m_Component:
   - component: {fileID: 7949499909643958122}
   - component: {fileID: 4923836654747301153}
-  m_Layer: 2
+  m_Layer: 11
   m_Name: AmmoDispenser
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -30610,7 +30610,7 @@ GameObject:
   - component: {fileID: 3950730030727516955}
   - component: {fileID: 5607241098388200975}
   - component: {fileID: 62814520511743323}
-  m_Layer: 2
+  m_Layer: 11
   m_Name: LeftShoulder
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -30812,7 +30812,7 @@ GameObject:
   - component: {fileID: 9113723079897182772}
   - component: {fileID: 3826478601987012715}
   - component: {fileID: 3826478601987012714}
-  m_Layer: 2
+  m_Layer: 11
   m_Name: Text
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -38070,7 +38070,7 @@ GameObject:
   - component: {fileID: 4061471408482123095}
   - component: {fileID: 3728526370974933142}
   - component: {fileID: 2564994615776212299}
-  m_Layer: 2
+  m_Layer: 11
   m_Name: AmmoHolster
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -40022,7 +40022,7 @@ GameObject:
   - component: {fileID: 1409043874412111041}
   - component: {fileID: 4966187007114288815}
   - component: {fileID: 7129663240733859030}
-  m_Layer: 2
+  m_Layer: 11
   m_Name: Ring
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -40891,7 +40891,7 @@ GameObject:
   - component: {fileID: 3945380957979013488}
   - component: {fileID: 3610812597659525685}
   - component: {fileID: 3299528035297935701}
-  m_Layer: 2
+  m_Layer: 11
   m_Name: RightShoulder
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -42299,7 +42299,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4753009605059924655}
   - component: {fileID: 5925128526909526821}
-  m_Layer: 0
+  m_Layer: 11
   m_Name: Inventory
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -59944,7 +59944,7 @@ GameObject:
   - component: {fileID: 1245625974241469690}
   - component: {fileID: 7991391720457503166}
   - component: {fileID: 783583160021366727}
-  m_Layer: 2
+  m_Layer: 11
   m_Name: HolsterLeft
   m_TagString: Untagged
   m_Icon: {fileID: 0}

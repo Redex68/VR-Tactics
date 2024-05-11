@@ -124,20 +124,33 @@ public class Spawner : MonoBehaviour, INetworkRunnerCallbacks
 
     IEnumerator DelayedRTSSpawn()
     {
-        yield return new WaitForSeconds(2);
+        bool stop = false;
+        int count = 0;
+        GameObject VRPlayer = null, NetworkedManagers = null;
+        while(!stop) 
+        {
+            yield return new WaitForSeconds(1);
+            VRPlayer = GameObject.Find("VR Player Networked(Clone)");
+            NetworkedManagers = GameObject.Find("NetworkedManagers(Clone)");
+            if (VRPlayer != null && NetworkedManagers != null) stop = true;
 
-        GameObject.Find("VR Player Networked(Clone)").name = "VR Player";
-        GameObject.Find("NetworkedManagers(Clone)").name = "NetworkedManagers";
+            if(++count > 10)
+            {
+                //TODO: Game failed to connect
+                yield break;
+            }
+        }
+
+        VRPlayer.name = "VR Player";
+        NetworkedManagers.name = "NetworkedManagers";
         var spawnPoint = GameObject.Find("RTS Player Spawn Point");
-        var spawnPosition = spawnPoint.transform.position;
-        var spawnRotation = spawnPoint.transform.rotation;
-        GameObject player = Instantiate(_rtsPlayerPrefab, spawnPosition, spawnRotation);
+        spawnPoint.transform.GetPositionAndRotation(out var spawnPosition, out var spawnRotation);
+        Instantiate(_rtsPlayerPrefab, spawnPosition, spawnRotation);
         _onPlayerLoaded.Raise(this, null);
     }
 
     private void SpawnVRPlayer(NetworkRunner runner, PlayerRef player)
     {
-        Debug.Log("Spawning VR player");
         var spawnPoint = GameObject.Find("VR Player Spawn Point");
         var spawnPosition = spawnPoint.transform.position;
         var spawnRotation = spawnPoint.transform.rotation;
@@ -219,12 +232,10 @@ public class Spawner : MonoBehaviour, INetworkRunnerCallbacks
     public void OnReliableDataReceived(NetworkRunner runner, PlayerRef player, ReliableKey key, ArraySegment<byte> data) { }
     public void OnSceneLoadDone(NetworkRunner runner)
     {
-        Debug.Log($"Here {SceneManager.GetActiveScene().buildIndex}, {_playerType.value}");
         if (runner.IsServer && _spawnedCharacters.Count != 0)
             SpawnVRPlayer(runner, default);
         else if(SceneManager.GetActiveScene().buildIndex == 1 && _playerType.value == PlayerType.RTS)
         {
-            Debug.Log($"Here 2");
             StartCoroutine(DelayedRTSSpawn());
         }
     }

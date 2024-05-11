@@ -1,12 +1,9 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem.UI;
 
 public class UIEventSystemManager : MonoBehaviour
 {
     [SerializeField] EventManagerType eventManagerType;
-    [SerializeField] GameEvent playerTypeSelected;
     [SerializeField] PlayerTypeVariable playerType;
 
     MultiplayerEventSystem EventSystem;
@@ -16,7 +13,7 @@ public class UIEventSystemManager : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        playerTypeSelected.OnEvent += OnPlayerTypeChanged;
+        playerType.ValueChanged += OnPlayerTypeChanged;
         EventSystem = transform.GetComponent<MultiplayerEventSystem>();
         if(eventManagerType == EventManagerType.VREventManager)
             InputSystem = transform.GetComponent<BNG.VRUISystem>();
@@ -25,17 +22,17 @@ public class UIEventSystemManager : MonoBehaviour
 
         EventSystem.enabled = false;
         InputSystem.enabled = false;
-        OnPlayerTypeChanged(null, null);
+        OnPlayerTypeChanged(default, playerType.value);
     }
 
     void OnDisable()
     {
-        playerTypeSelected.OnEvent -= OnPlayerTypeChanged;
+        playerType.ValueChanged -= OnPlayerTypeChanged;
     }
 
-    void OnPlayerTypeChanged(Component sender, object data)
+    void OnPlayerTypeChanged(PlayerType oldVal, PlayerType newVal)
     {
-        switch(playerType.value)
+        switch(newVal)
         {
             case PlayerType.VR:
                 if(eventManagerType == EventManagerType.VREventManager)

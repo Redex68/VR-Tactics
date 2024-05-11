@@ -13,5 +13,4 @@ MonoBehaviour:
   m_Name: PlayerType
   m_EditorClassIdentifier: 
   defaultValue: 0
-  useDefault: 0
-  value: 0
+  useDefault: 1
