@@ -233,6 +233,9 @@ public class Spawner : MonoBehaviour, INetworkRunnerCallbacks
             _spawnedCharacters.Remove(player);
         }
         _players.Remove(player);
+
+        if (SceneManager.GetActiveScene().buildIndex == 1)
+            FindObjectOfType<CustomNetworkSceneManager>().OnOpenLobbyScreen(null, null);
     }
 
     public void OnReliableDataProgress(NetworkRunner runner, PlayerRef player, ReliableKey key, float progress) { }
@@ -248,6 +251,11 @@ public class Spawner : MonoBehaviour, INetworkRunnerCallbacks
     }
     public void OnSceneLoadStart(NetworkRunner runner) { }
     public void OnSessionListUpdated(NetworkRunner runner, List<SessionInfo> sessionList) { }
-    public void OnShutdown(NetworkRunner runner, ShutdownReason shutdownReason) { }
+    public void OnShutdown(NetworkRunner runner, ShutdownReason shutdownReason)
+    {
+        Debug.Log("HERE: DISCONNECTING!!");
+        FindObjectOfType<CustomNetworkSceneManager>()?.OpenMainMenu(null, null);
+    }
+
     public void OnUserSimulationMessage(NetworkRunner runner, SimulationMessagePtr message) { }
 }

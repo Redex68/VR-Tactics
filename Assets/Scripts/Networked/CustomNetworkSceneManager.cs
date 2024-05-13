@@ -60,7 +60,7 @@ public class CustomNetworkSceneManager : NetworkBehaviour
     #endregion
 
     #region OpenMainMenu
-    private async void OpenMainMenu(Component sender, object victor)
+    public async void OpenMainMenu(Component sender, object victor)
     {
         await Runner.Shutdown();
         SceneManager.LoadScene("Menu");
