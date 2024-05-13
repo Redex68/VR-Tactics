@@ -14,6 +14,7 @@ public class Spawner : MonoBehaviour, INetworkRunnerCallbacks
     [SerializeField] private PlayerTypeVariable _playerType;
     [SerializeField] private NetworkPrefabRef _vrPlayerPrefab;
     [SerializeField] private NetworkPrefabRef _networkedManagersPrefab;
+    [SerializeField] private NetworkPrefabRef _gunRackPrefab;
     [SerializeField] private GameObject _rtsPlayerPrefab;
     [SerializeField] private GameEvent _onSessionStart;
     [SerializeField] private GameEvent _onSessionStarted;
@@ -64,6 +65,13 @@ public class Spawner : MonoBehaviour, INetworkRunnerCallbacks
     void OnDisable()
     {
         _onSessionStart.OnEvent -= OnStartGame;
+    }
+
+    public static string GetSessionName()
+    {
+        if (_instance._runner)
+            return _instance._runner.SessionInfo.Name;
+        else return "";
     }
 
     private void OnStartGame(Component sender, object data)
@@ -188,6 +196,17 @@ public class Spawner : MonoBehaviour, INetworkRunnerCallbacks
         _onPlayerLoaded.Raise(this, null);
     }
 
+    private void SpawnGunRack(NetworkRunner runner)
+    {
+        var spawnPoint = GameObject.Find("GunRack Spawn Point");
+        var spawnPosition = spawnPoint.transform.position;
+        var spawnRotation = spawnPoint.transform.rotation;
+
+        var networkPlayerObject = runner.Spawn(_gunRackPrefab, spawnPosition, spawnRotation);
+
+        networkPlayerObject.name = "GunRack";
+    }
+
     public void OnConnectedToServer(NetworkRunner runner) { }
     public void OnConnectFailed(NetworkRunner runner, NetAddress remoteAddress, NetConnectFailedReason reason) { }
     public void OnConnectRequest(NetworkRunner runner, NetworkRunnerCallbackArgs.ConnectRequest request, byte[] token) { }
@@ -222,7 +241,10 @@ public class Spawner : MonoBehaviour, INetworkRunnerCallbacks
     public void OnPlayerJoined(NetworkRunner runner, PlayerRef player)
     {
         if (runner.IsServer && _spawnedCharacters.Count == 0)
+        {
             SpawnVRPlayer(runner, player);
+            SpawnGunRack(runner);
+        }
     }
 
     public void OnPlayerLeft(NetworkRunner runner, PlayerRef player)
@@ -243,7 +265,10 @@ public class Spawner : MonoBehaviour, INetworkRunnerCallbacks
     public void OnSceneLoadDone(NetworkRunner runner)
     {
         if (runner.IsServer && _spawnedCharacters.Count != 0)
+        {
             SpawnVRPlayer(runner, default);
+            SpawnGunRack(runner);
+        }
         else if(SceneManager.GetActiveScene().buildIndex == 1 && _playerType.value == PlayerType.RTS)
         {
             StartCoroutine(DelayedRTSSpawn());
@@ -253,7 +278,6 @@ public class Spawner : MonoBehaviour, INetworkRunnerCallbacks
     public void OnSessionListUpdated(NetworkRunner runner, List<SessionInfo> sessionList) { }
     public void OnShutdown(NetworkRunner runner, ShutdownReason shutdownReason)
     {
-        Debug.Log("HERE: DISCONNECTING!!");
         FindObjectOfType<CustomNetworkSceneManager>()?.OpenMainMenu(null, null);
     }
 

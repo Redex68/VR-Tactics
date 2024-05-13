@@ -50,6 +50,7 @@ namespace BNG {
                 fadeObject.transform.localPosition = new Vector3(0, 0, 0.03f);
                 fadeObject.transform.localEulerAngles = Vector3.zero;
                 fadeObject.transform.name = faderName;
+                fadeObject.layer = LayerMask.NameToLayer("RTS Invisible");
 
                 fadeCanvas = fadeObject.AddComponent<Canvas>();
                 fadeCanvas.renderMode = RenderMode.WorldSpace;

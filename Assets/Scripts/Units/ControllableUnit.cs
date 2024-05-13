@@ -1,11 +1,7 @@
-using System;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
 using BNG;
 using Fusion;
-using static Fusion.NetworkBehaviour;
 
 public class ControllableUnit : NetworkBehaviour
 {
@@ -18,7 +14,6 @@ public class ControllableUnit : NetworkBehaviour
     [SerializeField] float repositionMaxDistance = 7;
     [SerializeField] float optimalEngagementDistance = 25;
     [SerializeField] float maxEngagementDistance = 50;
-    [SerializeField] private GameEvent onShoot;
     [SerializeField] private PlayerTypeVariable playerType;
 
     public LayerMask mask;
@@ -44,14 +39,21 @@ public class ControllableUnit : NetworkBehaviour
     // Start is called before the first frame update
     override public void Spawned()
     {
-        agent = gameObject.GetComponent<NavMeshAgent>();
-        if(placeableUnit) agent.enabled = false;
-        VRPlayerController = GameObject.Find("VR Player/PlayerController").transform;
-        playerLayer = LayerMask.NameToLayer("Player");
-        weaponScript = weaponMuzzle.GetComponentInParent<RaycastWeapon>();
         _changeDetector = GetChangeDetector(ChangeDetector.Source.SimulationState);
 
-        UnitSelector.addUnit(this);
+        agent = gameObject.GetComponent<NavMeshAgent>();
+        if (placeableUnit) agent.enabled = false;
+        weaponScript = weaponMuzzle.GetComponentInParent<RaycastWeapon>();
+
+        if (playerType.value == PlayerType.VR)
+        {
+            playerLayer = LayerMask.NameToLayer("Player");
+            VRPlayerController = GameObject.Find("VR Player/PlayerController").transform;
+        }
+        else if(playerType.value == PlayerType.RTS)
+        {
+            UnitSelector.addUnit(this);
+        }
     }
 
     override public void Render()

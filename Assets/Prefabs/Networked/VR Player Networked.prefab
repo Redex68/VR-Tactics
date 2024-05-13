@@ -13712,7 +13712,7 @@ GameObject:
   - component: {fileID: 4541637229892033103}
   - component: {fileID: 2261909204442331432}
   - component: {fileID: 2261909204442331433}
-  - component: {fileID: 7433270968333589527}
+  - component: {fileID: 4765528909865995985}
   m_Layer: 9
   m_Name: PlayerController
   m_TagString: Player
@@ -14147,7 +14147,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   playerHealth: {fileID: 11400000, guid: ca6ef273b0ccf2e45b0e59313ae1399f, type: 2}
   gameEnd: {fileID: 11400000, guid: fc3a4a1e0dc188d45acc6d699beb3944, type: 2}
---- !u!114 &7433270968333589527
+--- !u!114 &4765528909865995985
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -14156,13 +14156,10 @@ MonoBehaviour:
   m_GameObject: {fileID: 1984239649207386330}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 158639473, guid: e725a070cec140c4caffb81624c8c787, type: 3}
+  m_Script: {fileID: 11500000, guid: 8af238317c12b85489479bc73b8ebd86, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  SyncScale: 0
-  SyncParent: 0
-  _autoAOIOverride: 1
-  DisableSharedModeInterpolation: 0
+  playerType: {fileID: 11400000, guid: 54e349ef13836c346bbba52f67b71934, type: 2}
 --- !u!1 &1986093371733754939
 GameObject:
   m_ObjectHideFlags: 0
@@ -18025,7 +18022,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2574193964362030511}
-  - component: {fileID: 4317907166281069886}
+  - component: {fileID: 3119840308188588693}
   m_Layer: 0
   m_Name: TrackingSpace
   m_TagString: Untagged
@@ -18054,7 +18051,7 @@ Transform:
   m_Father: {fileID: 2574193964362091477}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &4317907166281069886
+--- !u!114 &3119840308188588693
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -18063,13 +18060,10 @@ MonoBehaviour:
   m_GameObject: {fileID: 2574193964362344527}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 158639473, guid: e725a070cec140c4caffb81624c8c787, type: 3}
+  m_Script: {fileID: 11500000, guid: 8af238317c12b85489479bc73b8ebd86, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  SyncScale: 0
-  SyncParent: 0
-  _autoAOIOverride: 1
-  DisableSharedModeInterpolation: 0
+  playerType: {fileID: 11400000, guid: 54e349ef13836c346bbba52f67b71934, type: 2}
 --- !u!1 &2574193964362357927
 GameObject:
   m_ObjectHideFlags: 0
@@ -18116,7 +18110,7 @@ GameObject:
   - component: {fileID: 3826478601431943947}
   - component: {fileID: 4457525952286847009}
   - component: {fileID: 470062714851781963}
-  - component: {fileID: 4284049504343280911}
+  - component: {fileID: 7118900941591493916}
   m_Layer: 0
   m_Name: CenterEyeAnchor
   m_TagString: MainCamera
@@ -18240,7 +18234,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Device: 0
---- !u!114 &4284049504343280911
+--- !u!114 &7118900941591493916
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -18249,13 +18243,10 @@ MonoBehaviour:
   m_GameObject: {fileID: 2574193964362389489}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 158639473, guid: e725a070cec140c4caffb81624c8c787, type: 3}
+  m_Script: {fileID: 11500000, guid: 8af238317c12b85489479bc73b8ebd86, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  SyncScale: 0
-  SyncParent: 0
-  _autoAOIOverride: 1
-  DisableSharedModeInterpolation: 0
+  playerType: {fileID: 11400000, guid: 54e349ef13836c346bbba52f67b71934, type: 2}
 --- !u!1 &2574193964362389491
 GameObject:
   m_ObjectHideFlags: 0
@@ -18465,9 +18456,9 @@ GameObject:
   - component: {fileID: 8498893783144249618}
   - component: {fileID: 470062714268078032}
   - component: {fileID: 2730553273789807880}
-  - component: {fileID: -3036184258117446554}
   - component: {fileID: 4614592033571554170}
   - component: {fileID: 2144236656494776196}
+  - component: {fileID: 8534909964734105882}
   m_Layer: 0
   m_Name: VR Player Networked
   m_TagString: Untagged
@@ -18651,29 +18642,13 @@ MonoBehaviour:
   Flags: 262145
   NestedObjects: []
   NetworkedBehaviours:
-  - {fileID: -3036184258117446554}
-  - {fileID: 7433270968333589527}
+  - {fileID: 8534909964734105882}
+  - {fileID: 4765528909865995985}
   - {fileID: 7485077414591104383}
-  - {fileID: 4317907166281069886}
-  - {fileID: 4284049504343280911}
-  - {fileID: 6399281255726516851}
-  - {fileID: 7145178361499588250}
---- !u!114 &-3036184258117446554
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2574193964393994649}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 158639473, guid: e725a070cec140c4caffb81624c8c787, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  SyncScale: 0
-  SyncParent: 0
-  _autoAOIOverride: 1
-  DisableSharedModeInterpolation: 0
+  - {fileID: 3119840308188588693}
+  - {fileID: 7118900941591493916}
+  - {fileID: 3645810554902963778}
+  - {fileID: 1816872712654151629}
 --- !u!114 &4614592033571554170
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -18746,6 +18721,19 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Name: VR Player
+--- !u!114 &8534909964734105882
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2574193964393994649}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8af238317c12b85489479bc73b8ebd86, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  playerType: {fileID: 11400000, guid: 54e349ef13836c346bbba52f67b71934, type: 2}
 --- !u!1 &2574193964501203193
 GameObject:
   m_ObjectHideFlags: 0
@@ -18901,7 +18889,7 @@ GameObject:
   m_Component:
   - component: {fileID: 2573452238096630807}
   - component: {fileID: 470062713506838818}
-  - component: {fileID: 7145178361499588250}
+  - component: {fileID: 1816872712654151629}
   m_Layer: 0
   m_Name: RightControllerAnchor
   m_TagString: Untagged
@@ -18938,7 +18926,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Device: 2
---- !u!114 &7145178361499588250
+--- !u!114 &1816872712654151629
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -18947,13 +18935,10 @@ MonoBehaviour:
   m_GameObject: {fileID: 2574547140449041729}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 158639473, guid: e725a070cec140c4caffb81624c8c787, type: 3}
+  m_Script: {fileID: 11500000, guid: 8af238317c12b85489479bc73b8ebd86, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  SyncScale: 0
-  SyncParent: 0
-  _autoAOIOverride: 1
-  DisableSharedModeInterpolation: 0
+  playerType: {fileID: 11400000, guid: 54e349ef13836c346bbba52f67b71934, type: 2}
 --- !u!1 &2575137093247547299
 GameObject:
   m_ObjectHideFlags: 0
@@ -18964,7 +18949,7 @@ GameObject:
   m_Component:
   - component: {fileID: 2573735252663413337}
   - component: {fileID: 470062714601836179}
-  - component: {fileID: 6399281255726516851}
+  - component: {fileID: 3645810554902963778}
   m_Layer: 0
   m_Name: LeftControllerAnchor
   m_TagString: Untagged
@@ -19001,7 +18986,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Device: 1
---- !u!114 &6399281255726516851
+--- !u!114 &3645810554902963778
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -19010,13 +18995,10 @@ MonoBehaviour:
   m_GameObject: {fileID: 2575137093247547299}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 158639473, guid: e725a070cec140c4caffb81624c8c787, type: 3}
+  m_Script: {fileID: 11500000, guid: 8af238317c12b85489479bc73b8ebd86, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  SyncScale: 0
-  SyncParent: 0
-  _autoAOIOverride: 1
-  DisableSharedModeInterpolation: 0
+  playerType: {fileID: 11400000, guid: 54e349ef13836c346bbba52f67b71934, type: 2}
 --- !u!1 &2584783561748469778
 GameObject:
   m_ObjectHideFlags: 0

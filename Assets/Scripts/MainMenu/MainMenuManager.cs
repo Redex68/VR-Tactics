@@ -8,6 +8,7 @@ public class MainMenuManager : MonoBehaviour
     [SerializeField] GameObject HostScreen;
     [SerializeField] GameObject JoinScreen;
     [SerializeField] GameObject StartScreen;
+    [SerializeField] GameObject VRPlayerScreen;
 
     [Header("Game Init Elements")]
     [SerializeField] UnityEngine.UI.Button HostGame;
@@ -27,6 +28,7 @@ public class MainMenuManager : MonoBehaviour
         HostScreen.SetActive(false);
         JoinScreen.SetActive(false);
         StartScreen.SetActive(false);
+        VRPlayerScreen.SetActive(false);
 
         if (GameObject.FindAnyObjectByType<NetworkRunner>() != null) OpenStartMenu();
     }
@@ -97,8 +99,8 @@ public class MainMenuManager : MonoBehaviour
         JoinScreen.SetActive(false);
 
         if (playerType.value == PlayerType.RTS)
-        {
             StartScreen.SetActive(true);
-        }
+        else
+            VRPlayerScreen.SetActive(true);
     }
 }

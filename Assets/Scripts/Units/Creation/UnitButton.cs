@@ -31,6 +31,7 @@ public class UnitButton: Button {
 
         if (numUnitsLeftText) numUnitsLeftText.text = numUnitsLeft.ToString();
         if (numUnitsLeft <= 0) this.interactable = false;
+        else this.interactable = true;
     }
 
     public override void OnPointerDown(PointerEventData eventData)

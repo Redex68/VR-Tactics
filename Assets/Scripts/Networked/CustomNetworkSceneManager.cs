@@ -7,14 +7,12 @@ public class CustomNetworkSceneManager : NetworkBehaviour
 {
     [SerializeField] GameEvent onGameStart;
     [SerializeField] GameEvent onOpenLobbyScreen;
-    [SerializeField] GameEvent onExitGame;
     [SerializeField] GameEvent disconnect;
 
     void OnEnable()
     {
         onGameStart.OnEvent += OnGameStart;
         onOpenLobbyScreen.OnEvent += OnOpenLobbyScreen;
-        onExitGame.OnEvent += OnExitGame;
         disconnect.OnEvent += OpenMainMenu;
     }
 
@@ -22,7 +20,6 @@ public class CustomNetworkSceneManager : NetworkBehaviour
     {
         onGameStart.OnEvent -= OnGameStart;
         onOpenLobbyScreen.OnEvent -= OnOpenLobbyScreen;
-        onExitGame.OnEvent -= OnExitGame;
         disconnect.OnEvent -= OpenMainMenu;
     }
 
@@ -49,13 +46,6 @@ public class CustomNetworkSceneManager : NetworkBehaviour
     private void RPCOnOpenMainMenu()
     {
         Runner.LoadScene(SceneRef.FromIndex(0), UnityEngine.SceneManagement.LoadSceneMode.Single);
-    }
-    #endregion
-
-    #region ExitGame
-    public void OnExitGame(Component sender, object data)
-    {
-        Application.Quit();
     }
     #endregion
 

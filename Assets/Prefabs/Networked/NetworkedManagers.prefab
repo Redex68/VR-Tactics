@@ -15,6 +15,7 @@ GameObject:
   - component: {fileID: 8650186839400377216}
   - component: {fileID: 7587462031384973305}
   - component: {fileID: -3638618863887143806}
+  - component: {fileID: 5985662610801595686}
   m_Layer: 0
   m_Name: NetworkedManagers
   m_TagString: Untagged
@@ -88,6 +89,7 @@ MonoBehaviour:
   - {fileID: 2715874389027184824}
   - {fileID: 8650186839400377216}
   - {fileID: 7587462031384973305}
+  - {fileID: 5985662610801595686}
 --- !u!114 &8650186839400377216
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -131,3 +133,18 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Name: NetworkedManagers
+--- !u!114 &5985662610801595686
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2715874389027184826}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e2259d4911baba948bf8e95a30e776e4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  unitPrefab:
+    RawGuidValue: 1aef78b3a21f7934aa4427c63978afbc
+  spawnUnits: {fileID: 11400000, guid: cb048572b0469b34cbb2e7ba50c0289c, type: 2}
