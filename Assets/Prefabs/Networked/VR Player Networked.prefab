@@ -18467,7 +18467,7 @@ GameObject:
   - component: {fileID: 2730553273789807880}
   - component: {fileID: -3036184258117446554}
   - component: {fileID: 4614592033571554170}
-  - component: {fileID: 5274703453323505600}
+  - component: {fileID: 2144236656494776196}
   m_Layer: 0
   m_Name: VR Player Networked
   m_TagString: Untagged
@@ -18691,7 +18691,7 @@ MonoBehaviour:
   - {fileID: 8498893783144249631}
   - {fileID: 8498893783144249618}
   - {fileID: 470062714268078032}
-  - {fileID: 5274703453323505600}
+  - {fileID: 0}
   - {fileID: 8235880208394352448}
   - {fileID: 5956064236319566884}
   - {fileID: 3826478601633137395}
@@ -18733,18 +18733,19 @@ MonoBehaviour:
   - {fileID: 8118310663825329167}
   - {fileID: 8118310663825329160}
   - {fileID: 8118310663825329166}
---- !u!114 &5274703453323505600
+--- !u!114 &2144236656494776196
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2574193964393994649}
-  m_Enabled: 0
+  m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 705ed683f96a63e418f4ce3b422ebda2, type: 3}
+  m_Script: {fileID: 11500000, guid: 304a3e1016c495d4486d019e0cc40893, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  Name: VR Player
 --- !u!1 &2574193964501203193
 GameObject:
   m_ObjectHideFlags: 0

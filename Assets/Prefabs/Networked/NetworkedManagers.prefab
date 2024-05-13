@@ -14,6 +14,7 @@ GameObject:
   - component: {fileID: 2715874389027184827}
   - component: {fileID: 8650186839400377216}
   - component: {fileID: 7587462031384973305}
+  - component: {fileID: -3638618863887143806}
   m_Layer: 0
   m_Name: NetworkedManagers
   m_TagString: Untagged
@@ -48,6 +49,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a23c13de7eed3ce4eaf6529f9bb5d6be, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _swatUnitCounter: 8
+  _barricadeUnitCounter: 30
 --- !u!114 &2715874389027184824
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -112,3 +115,18 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   onGameStart: {fileID: 11400000, guid: c771129c0cde80044b2388405718b8b6, type: 2}
+  onOpenMainMenu: {fileID: 11400000, guid: b08accb2b0156764fbb54c6b93c4a5f4, type: 2}
+  onExitGame: {fileID: 11400000, guid: e5306e1aab65b474e96fa6fe9154ec4f, type: 2}
+--- !u!114 &-3638618863887143806
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2715874389027184826}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 304a3e1016c495d4486d019e0cc40893, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Name: NetworkedManagers

@@ -1,7 +1,4 @@
 using Fusion;
-using System;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
@@ -22,8 +19,16 @@ public class UnitButton: Button {
         numUnitsLeftText = transform.parent.Find("Counter/Number (TMP)")?.GetComponent<TMPro.TMP_Text>();
         if(numUnitsLeftText) numUnitsLeftText.text = numUnitsLeft.ToString();
         else Debug.LogError("No unit number counter found.");
+    }
 
-        UnitCreator.unitCreated.AddListener(onUnitPlaced);
+    void Update()
+    {
+        if (unitName == "Roadblock") numUnitsLeft = FindObjectOfType<UnitCreator>()?.BarricadeUnitCounter ?? maxUnitCount;
+        else if (unitName == "SWAT") numUnitsLeft = FindObjectOfType<UnitCreator>()?.SwatUnitCounter ?? maxUnitCount;
+        else Debug.LogError($"Unknown unit name: {unitName}");
+
+        if (numUnitsLeftText) numUnitsLeftText.text = numUnitsLeft.ToString();
+        if (numUnitsLeft == 0) this.interactable = false;
     }
 
     public override void OnPointerDown(PointerEventData eventData)
@@ -42,15 +47,5 @@ public class UnitButton: Button {
     {
         base.OnPointerExit(eventData);
         UIManager.setMouseOverButton(false);
-    }
-
-    private void onUnitPlaced(string unitName)
-    {
-        if(unitName == this.unitName)
-        {
-            numUnitsLeft--;
-            if(numUnitsLeftText) numUnitsLeftText.text = numUnitsLeft.ToString();
-            if(numUnitsLeft == 0) this.interactable = false;
-        } 
     }
 }

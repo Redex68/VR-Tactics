@@ -27,6 +27,8 @@ public class MainMenuManager : MonoBehaviour
         HostScreen.SetActive(false);
         JoinScreen.SetActive(false);
         StartScreen.SetActive(false);
+
+        if (GameObject.FindAnyObjectByType<NetworkRunner>() != null) OpenStartMenu();
     }
 
     void OnEnable()
@@ -84,14 +86,19 @@ public class MainMenuManager : MonoBehaviour
         StartGameResult result = (StartGameResult) data;
         if(result.Ok)
         {
-            MainMenu.SetActive(false);
-            HostScreen.SetActive(false);
-            JoinScreen.SetActive(false);
+            OpenStartMenu();
+        }
+    }
 
-            if (playerType.value == PlayerType.RTS)
-            {
-                StartScreen.SetActive(true);
-            }
+    private void OpenStartMenu()
+    {
+        MainMenu.SetActive(false);
+        HostScreen.SetActive(false);
+        JoinScreen.SetActive(false);
+
+        if (playerType.value == PlayerType.RTS)
+        {
+            StartScreen.SetActive(true);
         }
     }
 }

@@ -94,7 +94,7 @@ public class UnitPlacer: MonoBehaviour
         }
     }
 
-    public static void placeUnit(NetworkPrefabRef unit, GameObject unitTemplate, String unitName)
+    public static void placeUnit(NetworkPrefabRef unit, GameObject unitTemplate, string unitName)
     {
         placingUnit = true;
 
@@ -234,7 +234,7 @@ public class UnitPlacer: MonoBehaviour
         Quaternion rot = beingPlaced.unitTemplate.transform.rotation;
         GameObject.Destroy(beingPlaced.unitTemplate);
 
-        GameObject.FindObjectOfType<UnitCreator>().RpcSpawnUnit(beingPlaced.unit, pos, rot);
+        GameObject.FindObjectOfType<UnitCreator>().RpcSpawnUnit(beingPlaced.unit, pos, rot, beingPlaced.name);
     }
 
     /// <summary>

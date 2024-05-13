@@ -9,6 +9,8 @@ using UnityEngine.InputSystem;
 
 public class Spawner : MonoBehaviour, INetworkRunnerCallbacks
 {
+    static private Spawner _instance;
+
     [SerializeField] private PlayerTypeVariable _playerType;
     [SerializeField] private NetworkPrefabRef _vrPlayerPrefab;
     [SerializeField] private NetworkPrefabRef _networkedManagersPrefab;
@@ -42,6 +44,13 @@ public class Spawner : MonoBehaviour, INetworkRunnerCallbacks
     }
 
     private Actions _actions;
+
+    void Awake()
+    {
+
+        if (_instance != null && _instance != this) Destroy(gameObject);
+        else _instance = this;
+    }
 
     void Start()
     {
@@ -130,8 +139,8 @@ public class Spawner : MonoBehaviour, INetworkRunnerCallbacks
         while(!stop) 
         {
             yield return new WaitForSeconds(1);
-            VRPlayer = GameObject.Find("VR Player Networked(Clone)");
-            NetworkedManagers = GameObject.Find("NetworkedManagers(Clone)");
+            VRPlayer = GameObject.Find("VR Player");
+            NetworkedManagers = GameObject.Find("NetworkedManagers");
             if (VRPlayer != null && NetworkedManagers != null) stop = true;
 
             if(++count > 10)
@@ -141,8 +150,6 @@ public class Spawner : MonoBehaviour, INetworkRunnerCallbacks
             }
         }
 
-        VRPlayer.name = "VR Player";
-        NetworkedManagers.name = "NetworkedManagers";
         var spawnPoint = GameObject.Find("RTS Player Spawn Point");
         spawnPoint.transform.GetPositionAndRotation(out var spawnPosition, out var spawnRotation);
         Instantiate(_rtsPlayerPrefab, spawnPosition, spawnRotation);

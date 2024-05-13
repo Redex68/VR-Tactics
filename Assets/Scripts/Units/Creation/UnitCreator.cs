@@ -1,26 +1,62 @@
 using System.Collections;
 using UnityEngine;
-using UnityEngine.Events;
 using Unity.VisualScripting;
 using Fusion;
 
 public class UnitCreator : NetworkBehaviour
 {
-    public static UnityEvent<string> unitCreated = new UnityEvent<string>();
+    [Networked]
+    [SerializeField]
+    private int swatUnitCounter { get; set; }
+    [Networked]
+    [SerializeField]
+    private int barricadeUnitCounter { get; set; }
 
-    [Rpc(RpcSources.All, RpcTargets.StateAuthority, HostMode = RpcHostMode.SourceIsHostPlayer)]
-    public void RpcSpawnUnit(NetworkPrefabRef unit, Vector3 pos, Quaternion rot)
+    private bool _wasSpawned = false;
+    override public void Spawned()
     {
-        NetworkObject obj = Runner.Spawn(unit, pos, rot);
-        StartCoroutine(DelayedInit(obj));
+        _wasSpawned = true;
     }
 
-    private IEnumerator DelayedInit(NetworkObject obj)
+    public int? SwatUnitCounter {
+        get {
+            if (_wasSpawned) return swatUnitCounter;
+            else return null;
+        }
+    }
+    public int? BarricadeUnitCounter {
+        get {
+            if (_wasSpawned) return barricadeUnitCounter;
+            else return null;
+        }
+    }
+
+
+    [Rpc(RpcSources.All, RpcTargets.StateAuthority, HostMode = RpcHostMode.SourceIsHostPlayer)]
+    public void RpcSpawnUnit(NetworkPrefabRef unit, Vector3 pos, Quaternion rot, string name)
+    {
+        NetworkObject obj = Runner.Spawn(unit, pos, rot);
+        StartCoroutine(DelayedInit(obj, name));
+    }
+
+    private IEnumerator DelayedInit(NetworkObject obj, string name)
     {
         yield return new WaitForNextFrameUnit();
 
         ControllableUnit script = obj.GetComponent<ControllableUnit>();
         if (script != null) script.place();
-        unitCreated?.Invoke(obj.name);
+
+        switch(name)
+        {
+            case "Roadblock":
+                barricadeUnitCounter--;
+                break;
+            case "SWAT":
+                swatUnitCounter--;
+                break;
+            default:
+                Debug.LogError($"Unknown unit name: {name}");
+                break;
+        }
     }
 }
