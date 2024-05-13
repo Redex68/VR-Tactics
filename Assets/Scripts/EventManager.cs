@@ -1,18 +1,20 @@
 using Fusion;
 using UnityEngine;
-using UnityEngine.SceneManagement;
 
+[RequireComponent(typeof(CustomNetworkSceneManager))]
 public class EventManager : NetworkBehaviour
 {
     [SerializeField] GameEvent gameEnd;
     [SerializeField] PlayerTypeVariable playerType;
 
+    private CustomNetworkSceneManager sceneManager;
     override public void Spawned()
     {
         gameEnd.OnEvent += onGameEnd;
+        sceneManager = GetComponent<CustomNetworkSceneManager>();
     }
 
-    private void OnDisable()
+    void OnDestroy()
     {
         gameEnd.OnEvent -= onGameEnd;
     }
@@ -20,7 +22,7 @@ public class EventManager : NetworkBehaviour
     //TODO: Make networked
     void onGameEnd(Component sender, object victor)
     {
-        Invoke("loadScene", 5.0f);
+        if(Runner.IsServer) Invoke("loadLobbyScreen", 5.0f);
         if(playerType.value == PlayerType.VR) RpcNetworkedEventCall((Victor)victor);
     }
 
@@ -30,8 +32,8 @@ public class EventManager : NetworkBehaviour
         gameEnd.Raise(null, victor);
     }
 
-    void loadScene()
+    void loadLobbyScreen()
     {
-        SceneManager.LoadSceneAsync("Menu");
+        sceneManager.OnOpenLobbyScreen(null, null);
     }
 }

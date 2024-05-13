@@ -15,6 +15,17 @@ public class UnitCreator : NetworkBehaviour
     private bool _wasSpawned = false;
     override public void Spawned()
     {
+        StartCoroutine(Delayed());
+    }
+    public override void Despawned(NetworkRunner runner, bool hasState)
+    {
+        _wasSpawned = false;
+    }
+
+    IEnumerator Delayed()
+    {
+        yield return new WaitForNextFrameUnit();
+
         _wasSpawned = true;
     }
 

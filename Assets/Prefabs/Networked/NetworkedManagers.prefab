@@ -115,8 +115,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   onGameStart: {fileID: 11400000, guid: c771129c0cde80044b2388405718b8b6, type: 2}
-  onOpenMainMenu: {fileID: 11400000, guid: b08accb2b0156764fbb54c6b93c4a5f4, type: 2}
+  onOpenLobbyScreen: {fileID: 11400000, guid: b08accb2b0156764fbb54c6b93c4a5f4, type: 2}
   onExitGame: {fileID: 11400000, guid: e5306e1aab65b474e96fa6fe9154ec4f, type: 2}
+  disconnect: {fileID: 11400000, guid: b2a7d5a6f5bc9424dbd192f12f204aed, type: 2}
 --- !u!114 &-3638618863887143806
 MonoBehaviour:
   m_ObjectHideFlags: 0

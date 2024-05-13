@@ -23,12 +23,14 @@ public class UnitButton: Button {
 
     void Update()
     {
+        if(!Application.isPlaying) return;
+
         if (unitName == "Roadblock") numUnitsLeft = FindObjectOfType<UnitCreator>()?.BarricadeUnitCounter ?? maxUnitCount;
         else if (unitName == "SWAT") numUnitsLeft = FindObjectOfType<UnitCreator>()?.SwatUnitCounter ?? maxUnitCount;
         else Debug.LogError($"Unknown unit name: {unitName}");
 
         if (numUnitsLeftText) numUnitsLeftText.text = numUnitsLeft.ToString();
-        if (numUnitsLeft == 0) this.interactable = false;
+        if (numUnitsLeft <= 0) this.interactable = false;
     }
 
     public override void OnPointerDown(PointerEventData eventData)

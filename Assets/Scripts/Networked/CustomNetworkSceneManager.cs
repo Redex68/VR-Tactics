@@ -1,26 +1,32 @@
 using Fusion;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
+//Handles events related to the RTS player's menus
 public class CustomNetworkSceneManager : NetworkBehaviour
 {
     [SerializeField] GameEvent onGameStart;
-    [SerializeField] GameEvent onOpenMainMenu;
+    [SerializeField] GameEvent onOpenLobbyScreen;
     [SerializeField] GameEvent onExitGame;
+    [SerializeField] GameEvent disconnect;
 
     void OnEnable()
     {
         onGameStart.OnEvent += OnGameStart;
-        onOpenMainMenu.OnEvent += OnOpenMainMenu;
+        onOpenLobbyScreen.OnEvent += OnOpenLobbyScreen;
         onExitGame.OnEvent += OnExitGame;
+        disconnect.OnEvent += OpenMainMenu;
     }
 
-    private void OnDisable()
+    void OnDestroy()
     {
         onGameStart.OnEvent -= OnGameStart;
-        onOpenMainMenu.OnEvent -= OnOpenMainMenu;
+        onOpenLobbyScreen.OnEvent -= OnOpenLobbyScreen;
         onExitGame.OnEvent -= OnExitGame;
+        disconnect.OnEvent -= OpenMainMenu;
     }
 
+    #region GameStart
     private void OnGameStart(Component sender, object data)
     {
         RPCOnGameStart();
@@ -31,8 +37,10 @@ public class CustomNetworkSceneManager : NetworkBehaviour
     {
         Runner.LoadScene(SceneRef.FromIndex(1), UnityEngine.SceneManagement.LoadSceneMode.Single);
     }
+    #endregion
 
-    public void OnOpenMainMenu(Component sender, object data)
+    #region OpenLobbyScreen
+    public void OnOpenLobbyScreen(Component sender, object data)
     {
         RPCOnOpenMainMenu();
     }
@@ -42,9 +50,20 @@ public class CustomNetworkSceneManager : NetworkBehaviour
     {
         Runner.LoadScene(SceneRef.FromIndex(0), UnityEngine.SceneManagement.LoadSceneMode.Single);
     }
+    #endregion
 
+    #region ExitGame
     public void OnExitGame(Component sender, object data)
     {
         Application.Quit();
     }
+    #endregion
+
+    #region OpenMainMenu
+    private async void OpenMainMenu(Component sender, object victor)
+    {
+        await Runner.Shutdown();
+        SceneManager.LoadScene("Menu");
+    }
+    #endregion
 }

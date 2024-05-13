@@ -47,7 +47,7 @@ public class UnitSelector : MonoBehaviour
 //Removes the unit from the selector script's list of all units
     public static void removeUnit(ControllableUnit unit)
     {
-        Unit _unit = units[unit];
+        units.TryGetValue(unit, out Unit _unit);
         if(_unit.Equals(default(Unit)))
         {
             Debug.Log("Unit not found in list of all controllable units");
